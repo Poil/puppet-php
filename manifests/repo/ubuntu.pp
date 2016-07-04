@@ -12,8 +12,9 @@ class php::repo::ubuntu (
     warning('php::repo::ubuntu is private')
   }
 
-  if ! $::php::version in ['5.6' , '5.7', '7.0', '7.1'] {
-    fail("Error - ${module_name} versions ${::php::version} are not supported by ondrej repository")
+  $versions_keys = keys($::php::versions)
+  if intersection($versions_keys, ['5.6' , '5.7', '7.0', '7.1']) == $versions_keys {
+    fail("Error - ${module_name} versions ${versions_keys} are not supported by ondrej repository")
   }
 
   include '::apt'
