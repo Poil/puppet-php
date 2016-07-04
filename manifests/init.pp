@@ -19,7 +19,7 @@ class php (
       }
       if $repo == 'ondrej' {
         $versions_keys = keys($versions)
-        if !($versions_keys in ['5.6' , '5.7', '7.0', '7.1']) {
+        if intersection($versions_keys, ['5.6' , '5.7', '7.0', '7.1']) == $versions_keys {
           fail("Error - ${module_name} versions ${versions_keys} are not supported by ondrej repository")
         }
       }
