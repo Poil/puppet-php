@@ -1,0 +1,3 @@
+class php::repo::redhat (
+) {
+}
