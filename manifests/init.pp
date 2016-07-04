@@ -18,8 +18,9 @@ class php (
         fail("error - ${module_name} : on ${::operatingsystem} you must set repo to ondrej to support multiple php version")
       }
       if $repo == 'ondrej' {
-        if !keys(versions) in ['5.6' , '5.7', '7.0', '7.1'] {
-          fail("Error - ${module_name} versions ${::php::version} are not supported by ondrej repository")
+        $versions_keys = keys($versions_keys)
+        if !($versions_keys) in ['5.6' , '5.7', '7.0', '7.1'] {
+          fail("Error - ${module_name} versions ${versions_keys} are not supported by ondrej repository")
         }
       }
     }
