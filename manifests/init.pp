@@ -43,7 +43,9 @@ class php (
   # ------------------------
   # Let's go
   # ------------------------
-  ::php::repo { repo => $repo }
+  class { '::php::repo':
+    repo => $repo
+  }
 
   ::php::mod_php { $versions :
     require  => Class['::php::repo'],
