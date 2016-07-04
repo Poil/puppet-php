@@ -6,10 +6,10 @@ class php::repo (
     'Ubuntu': {
       case $repo {
         'distrib': {
-          ::php::repo::ubuntu { ensure => absent }
+          class { '::php::repo::ubuntu' : ensure => absent }
         }
         'ondrej': {
-          ::php::repo::ubuntu { ensure => present }
+          class { '::php::repo::ubuntu' : ensure => present }
         }
         default : {
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
@@ -19,10 +19,10 @@ class php::repo (
     'Debian': {
       case $repo {
         'distrib': {
-          ::php::repo::debian { ensure => present }
+          class { '::php::repo::debian' : ensure => absent }
         }
         'dotdeb': {
-          ::php::repo::debian { ensure => present }
+          class { '::php::repo::debian' : ensure => present }
         }
         default : {
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
