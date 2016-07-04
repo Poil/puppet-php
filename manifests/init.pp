@@ -48,16 +48,8 @@ class php (
     repo => $repo
   }
 
-  ::php::mod_php { $versions :
+  ::php::install { $versions :
     require  => Class['::php::repo'],
-  }
-
-  ::php::cli { $versions :
-    require => Class['::php::repo'],
-  }
-
-  ::php::fpm { $versions :
-    require => Class['::php::repo'],
   }
 }
 
