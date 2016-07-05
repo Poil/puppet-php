@@ -52,10 +52,7 @@ class php (
   # ------------------------
   class { '::php::repo':
     repo => $repo
-  }
-
-  ::php::install { $versions :
-    require  => Class['::php::repo'],
-  }
+  } ->
+  create_resources('::php::install',$versions, {})
 }
 
