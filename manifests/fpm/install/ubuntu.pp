@@ -1,6 +1,6 @@
 define php::fpm::install::ubuntu (
   $ensure,
-  $version = $name,
+  $version,
 ) {
   case $::php::repo {
     'distrib': {

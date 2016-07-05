@@ -1,6 +1,6 @@
 define php::fpm::install (
   $ensure,
-  $version = $name,
+  $version,
 ) {
   case $::operatingsystem {
     'Ubuntu': {

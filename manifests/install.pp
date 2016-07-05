@@ -1,5 +1,6 @@
 # == define php::install
 define php::install (
+  $version,
   $ensure_cli = true,
   $cli_conf = {},
   $ensure_mod_php = false,
@@ -8,7 +9,6 @@ define php::install (
   $fpm_conf = {},
   $fpm_pool = {},
   $modules = {},
-  $version = $name,
 ) {
   php::fpm::install { $name:
     ensure  => $ensure_fpm,
