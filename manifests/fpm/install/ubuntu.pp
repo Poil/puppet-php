@@ -18,6 +18,6 @@ define php::fpm::install::ubuntu (
   }
 
   package { $package_name:
-    ensure => installed
+    ensure => $ensure,
   }
 }
