@@ -1,6 +1,5 @@
 define php::fpm::install::ubuntu (
   $ensure,
-  $version,
 ) {
   case $::php::repo {
     'distrib': {
@@ -9,9 +8,9 @@ define php::fpm::install::ubuntu (
       $binary_path = '/usr/bin/php5'
     }
     'ondrej': {
-      $package_name = "php${version}-fpm"
-      $config_dir = "/etc/php/${version}"
-      $binary_path = "/usr/bin/php${version}"
+      $package_name = "php${name}-fpm"
+      $config_dir = "/etc/php/${name}"
+      $binary_path = "/usr/bin/php${name}"
     }
     default: {
       fail("error - ${module_name} unknown repository ${::php::repo}")

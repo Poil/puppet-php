@@ -1,12 +1,10 @@
 define php::fpm::install (
   $ensure,
-  $version,
 ) {
   case $::operatingsystem {
     'Ubuntu': {
       ::php::fpm::install::ubuntu { $name :
         ensure  => $ensure,
-        version => $version,
       }
     }
     'Debian': {

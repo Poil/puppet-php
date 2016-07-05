@@ -1,6 +1,5 @@
 # == define php::install
 define php::install (
-  $version,
   $ensure_cli = true,
   $cli_conf = {},
   $ensure_mod_php = false,
@@ -12,7 +11,6 @@ define php::install (
 ) {
   php::fpm::install { $name:
     ensure  => $ensure_fpm,
-    version => $version,
   }
 
   create_resources(ini_setting, $fpm_conf, $::php::default_fpm_conf)
