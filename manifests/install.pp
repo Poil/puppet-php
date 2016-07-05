@@ -8,9 +8,11 @@ define php::install (
   $fpm_conf = {},
   $fpm_pool = {},
   $modules = {},
+  $version = $name,
 ) {
   php::fpm::install { $name:
-    ensure => $ensure_fpm,
+    ensure  => $ensure_fpm,
+    version => $version,
   }
 
   create_resources(ini_setting, $fpm_conf, $::php::default_fpm_conf)
