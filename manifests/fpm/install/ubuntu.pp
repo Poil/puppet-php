@@ -1,8 +1,8 @@
 define php::fpm::install::ubuntu (
-  $repo,
-  $version
+  $ensure,
+  $version = $name,
 ) {
-  case $repo {
+  case $::php::repo {
     'distrib': {
       $package_name = 'php5-fpm'
       $config_dir = '/etc/php5'
@@ -14,7 +14,7 @@ define php::fpm::install::ubuntu (
       $binary_path = "/usr/bin/php${version}"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${repo}")
+      fail("error - ${module_name} unknown repository ${::php::repo}")
     }
   }
 
