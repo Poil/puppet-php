@@ -15,10 +15,9 @@ define php::install (
   validate_re($ensure_fpm, '^(present)|(installed)|(absent)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
 
   php::fpm::install { $name:
-    ensure  => $ensure_fpm,
+    ensure => $ensure_fpm,
+    conf   => $fpm_conf
   }
-
-  create_resources(ini_setting, $fpm_conf, $::php::default_fpm_conf)
 
   create_resources('php::fpm::pool', $fpm_pool)
 }

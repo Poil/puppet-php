@@ -43,8 +43,38 @@ class php (
   # ------------------------
   # Default Hash
   # ------------------------
-  $default_fpm_conf = {
-    'path' => '/etc/php/7.0/fpm/php.ini'
+  $default_config_hardening = {
+    'PHP'                      => {
+      'short_open_tag'         => 'Off',
+      'asp_tags'               => 'Off',
+      'safe_mode'              => 'Off', # On ?
+      'safe_mode_gid'          => 'Off', # On ?
+      'expose_php'             => 'Off',
+      'max_execution_time'     => '30',
+      'max_input_time'         => '60',
+      'memory_limit'           => '128M',
+      'display_errors'         => 'Off',
+      'error_reporting'        => 'E_ALL & ~E_DEPRECATED',
+      'display_startup_errors' => 'Off',
+      'log_errors'             => 'On',
+      'log_errors_max_len'     => '1024',
+      'ignore_repeated_errors' => 'Off',
+      'ignore_repeated_source' => 'Off',
+      'report_memleaks'        => 'On',
+      'track_errors'           => 'Off',
+      'html_errors'            => 'Off',
+      'register_globals'       => 'Off',
+      'register_long_arrays'   => 'Off',
+      'register_argc_argv'     => 'Off',
+      'auto_globals_jit'       => 'On',
+      'post_max_size'          => '8M',
+      'upload_max_filesize'    => '10M',
+      'max_file_uploads'       => '20',
+      'allow_url_fopen'        => 'Off',
+      'allow_url_include'      => 'Off',
+      'default_socket_timeout' => '60',
+      'date.timezone'          => 'Europe/Paris'
+    }
   }
 
   # ------------------------
