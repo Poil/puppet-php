@@ -41,7 +41,7 @@ class php (
   }
 
   # ------------------------
-  # Default Hash
+  # Default Config (globals)
   # ------------------------
   $default_config_hardening = {
     'PHP'                      => {
@@ -74,6 +74,23 @@ class php (
       'allow_url_include'      => 'Off',
       'default_socket_timeout' => '60',
       'date.timezone'          => 'Europe/Paris'
+    }
+  }
+  case $::operatingsystem {
+    'Debian': {
+      $fpm_user = 'www-data'
+      $fpm_group = 'www-data'
+    }
+    'Ubuntu': {
+      $fpm_user = 'www-data'
+      $fpm_group = 'www-data'
+    }
+    'RedHat', 'CentOS', 'OracleLinux': {
+      $fpm_user = 'apache'
+      $fpm_group = 'apache'
+    }
+    default: {
+      fail("error - ${module_name} : ${::operatingsystem} isn't supported")
     }
   }
 
