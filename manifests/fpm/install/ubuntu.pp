@@ -28,6 +28,6 @@ define php::fpm::install::ubuntu (
 
   $config = merge($::php::default_hardening_conf, $custom_config)
 
-  create_resources(ini_setting, $custom_config, $default_fpm_conf)
+  create_ini_settings($custom_config, $default_fpm_conf)
 
 }
