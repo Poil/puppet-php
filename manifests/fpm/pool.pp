@@ -19,7 +19,7 @@ define php::fpm::pool (
 ) {
 
   $default_pool_config = {
-    'www'                             => {
+    "${name}"                         => {
       'user'                          => $user,
       'group'                         => $group,
       'listen.owner'                  => $listen_owner,
