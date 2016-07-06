@@ -19,5 +19,5 @@ define php::install (
     custom_config => $custom_config_fpm
   }
 
-  create_resources('php::fpm::pool', $fpm_pools)
+  create_resources('php::fpm::pool', $fpm_pools, { 'version' => $name })
 }
