@@ -28,5 +28,5 @@ define php::fpm::pool::ubuntu(
   $myhash = merge($config, $default_ubuntu_pool_config)
   notify { $myhash: }
 
-  #create_ini_settings($config, $default_ubuntu_pool_config)
+  create_ini_settings($config, $default_ubuntu_pool_config)
 }
