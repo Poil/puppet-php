@@ -20,7 +20,7 @@ define php::fpm::pool::ubuntu(
 
   $default_ubuntu_pool_config = {
     'path'     => "${config_dir}/fpm/pool.d/${name}.conf",
-    'www'      => {
+    "${name}"  => {
       'listen' => $_listen,
     }
   }
