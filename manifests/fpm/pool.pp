@@ -62,7 +62,7 @@ define php::fpm::pool (
     }
   }
 
-  $pool_config = merge($default_pool_config, $custom_pool_config)
+  $pool_config = deep_merge($default_pool_config, $custom_pool_config)
 
   # -----------------------------
   # Call

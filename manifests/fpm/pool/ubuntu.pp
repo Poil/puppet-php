@@ -30,7 +30,7 @@ define php::fpm::pool::ubuntu(
     }
   }
 
-  $pool_config = merge($config, $default_config)
+  $pool_config = deep_merge($config, $default_config)
 
   case $ensure {
     'present', 'installed': {
