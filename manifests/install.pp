@@ -22,7 +22,7 @@ define php::install (
   create_resources('php::fpm::pool', $fpm_pools, { 'version' => $name })
 
   # Purge default www pool if no pool with this name have been defined
-  if !has_key($name, 'fpm_pools') or (has_key($name, 'fpm_pools') and !has_key($name['fpm_pools'], 'www') ) {
+  if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
     pool::fpm::install { 'www':
       ensure => absent
     }
