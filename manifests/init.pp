@@ -2,6 +2,7 @@
 class php (
   $versions        = $::php::params::version,
   $repo            = $::php::params::repo,
+  $log_path        = '/var/log',
 ) inherits php::params {
 
   # ------------------------
