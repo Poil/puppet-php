@@ -24,6 +24,7 @@ define php::install (
   # Purge default www pool if no pool with this name have been defined
   if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
     ::php::fpm::pool { "${name}-www" :
+      version   => $name,
       pool_name => 'www',
       ensure    => absent
     }

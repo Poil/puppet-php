@@ -12,13 +12,35 @@ define php::fpm::pool (
   $listen_mode = '0660',
   $pm = 'ondemand',
   $pm_max_children = 5,
-  $pm_start_servers = 2,
+  $pm_start_servers = '',
+  $pm_min_spare_servers = 1,
   $pm_max_spare_servers = 3,
   $pm_process_idle_timeout = '10s',
   $pm_max_requests = 500,
   $log_path = $::php::log_path,
 ) {
 
+  # -----------------------------
+  # Validate
+  case $pm{
+    'dynamic': {
+      if !empty($pm_start_servers) and ($pm_start_servers < $pm_min_spare_servers or $pm_start_servers > $pm_max_spare_servers) {
+        fail("Error start_servers value must be : min_spare_servers > start_servers < max_spare_servers")
+      }
+    }
+    'ondemand': { }
+    'static': {
+      if empty($pm_start_servers) {
+        fail("Error start_servers must be set when pm = static")
+      }
+    }
+    default: {
+      fail("Error - ${module_name} mode must be dynamic, ondemand or static")
+    }
+  }
+
+  # -----------------------------
+  # Config
   $default_pool_config = {
     "${pool_name}"                    => {
       'user'                          => $user,
@@ -29,6 +51,7 @@ define php::fpm::pool (
       'pm'                            => $pm,
       'pm.max_children'               => $pm_max_children,
       'pm.start_servers'              => $pm_start_servers,
+      'pm.min_spare_servers'          => $pm_min_spare_servers,
       'pm.max_spare_servers'          => $pm_max_spare_servers,
       'pm.process_idle_timeout'       => $pm_process_idle_timeout,
       'pm.max_requests'               => $pm_max_requests,
@@ -41,6 +64,8 @@ define php::fpm::pool (
 
   $pool_config = merge($default_pool_config, $custom_pool_config)
 
+  # -----------------------------
+  # Call
   case $::operatingsystem {
     'Ubuntu': {
       php::fpm::pool::ubuntu { $name:
