@@ -1,10 +1,12 @@
 define php::fpm::service (
   $ensure,
+  $enable,
 ) {
   case $::operatingsystem {
     'Ubuntu': {
       ::php::fpm::service::ubuntu { $name :
-        ensure        => $ensure,
+        ensure  => $ensure,
+        enable  => $enable
       }
     }
     'Debian': {
@@ -17,4 +19,6 @@ define php::fpm::service (
     }
   }
 }
+
+
 

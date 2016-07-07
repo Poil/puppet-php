@@ -5,8 +5,8 @@ define php::fpm::install (
   case $::operatingsystem {
     'Ubuntu': {
       ::php::fpm::install::ubuntu { $name :
-        ensure        => $ensure,
-        custom_config => $custom_config,
+        ensure         => $ensure,
+        custom_config  => $custom_config,
       }
     }
     'Debian': {

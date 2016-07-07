@@ -1,5 +1,6 @@
 define php::fpm::service::ubuntu (
   $ensure,
+  $enable,
 ) {
   case $::php::repo {
     'distrib': {
@@ -13,7 +14,8 @@ define php::fpm::service::ubuntu (
     }
   }
 
-  service { $service_name:
+  service { $package_name:
     ensure => $ensure,
+    enable => $enable,
   }
 }

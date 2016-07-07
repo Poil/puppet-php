@@ -5,6 +5,8 @@ define php::install (
   $ensure_mod_php = absent,
   $custom_config_mod_php = {},
   $ensure_fpm = absent,
+  $ensure_service_fpm = 'running',
+  $enable_service_fpm = true,
   $custom_config_fpm = {},
   $fpm_pools = {},
   $modules = {},
@@ -15,9 +17,13 @@ define php::install (
   validate_re($ensure_fpm, '^(present)|(installed)|(absent)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
 
   ::php::fpm::install { $name:
-    ensure        => $ensure_fpm,
-    custom_config => $custom_config_fpm,
-    notify    => Service['::php::fpm::service'],
+    ensure         => $ensure_fpm,
+    custom_config  => $custom_config_fpm,
+  }
+
+  ::php::fpm::service { $name:
+    ensure => $ensure_service_fpm,
+    enable => $enable_service_fpm,
   }
 
   create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => Service['::php::fpm::service'], })
@@ -28,7 +34,6 @@ define php::install (
       ensure    => absent,
       version   => $name,
       pool_name => 'www',
-      notify    => Service['::php::fpm::service'],
     }
   }
 }
