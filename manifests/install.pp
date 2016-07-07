@@ -22,9 +22,12 @@ define php::install (
     notify        =>  ::Php::Fpm::Service[$name],
   }
 
-  ::php::fpm::service { $name:
-    ensure => $ensure_service_fpm,
-    enable => $enable_service_fpm,
+  # Manage FPM Service only if installed
+  if ($ensure_fpm != 'absent') {
+    ::php::fpm::service { $name:
+      ensure => $ensure_service_fpm,
+      enable => $enable_service_fpm,
+    }
   }
 
   create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => ::Php::Fpm::Service[$name], })
