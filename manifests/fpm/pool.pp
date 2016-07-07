@@ -25,17 +25,17 @@ define php::fpm::pool (
   case $pm{
     'dynamic': {
       if !empty($pm_start_servers) and ($pm_start_servers < $pm_min_spare_servers or $pm_start_servers > $pm_max_spare_servers) {
-        fail("Error start_servers value must be : min_spare_servers > start_servers < max_spare_servers")
+        fail("Error - ${module_name}, start_servers value must be : min_spare_servers > start_servers < max_spare_servers")
       }
     }
     'ondemand': { }
     'static': {
       if empty($pm_start_servers) {
-        fail("Error start_servers must be set when pm = static")
+        fail("Error - ${module_name}, start_servers must be set when pm = static")
       }
     }
     default: {
-      fail("Error - ${module_name} mode must be dynamic, ondemand or static")
+      fail("Error - ${module_name}, mode must be dynamic, ondemand or static")
     }
   }
 
@@ -69,6 +69,7 @@ define php::fpm::pool (
   case $::operatingsystem {
     'Ubuntu': {
       php::fpm::pool::ubuntu { $name:
+        ensure    => $ensure,
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,

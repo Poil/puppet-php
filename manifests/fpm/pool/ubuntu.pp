@@ -1,9 +1,10 @@
 # == define php::fpm::pool::ubuntu
 define php::fpm::pool::ubuntu(
-  $pool_name = $name,
   $config,
   $version,
   $listen,
+  $ensure = 'present',
+  $pool_name = $name,
 ) {
   $_listen = pick($listen, "/run/php/php${version}-fpm.${pool_name}.sock")
 
@@ -15,7 +16,7 @@ define php::fpm::pool::ubuntu(
       $config_dir = "/etc/php/${version}"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("Error - ${module_name}, unknown repository ${::php::repo}")
     }
   }
 
@@ -30,6 +31,19 @@ define php::fpm::pool::ubuntu(
   }
 
   $pool_config = merge($config, $default_config)
+  notify { "${pool_name} => ${ensure}": }
 
-  create_ini_settings($pool_config, $default_ubuntu_pool_config)
+  case $ensure {
+    'present', 'installed': {
+      create_ini_settings($pool_config, $default_ubuntu_pool_config)
+    }
+    'absent': {
+      file { "${config_dir}/fpm/pool.d/${pool_name}.conf":
+        ensure => absent
+      }
+    }
+    default: {
+      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+    }
+  }
 }
