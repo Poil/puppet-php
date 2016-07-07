@@ -17,8 +17,9 @@ define php::install (
   validate_re($ensure_fpm, '^(present)|(installed)|(absent)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
 
   ::php::fpm::install { $name:
-    ensure         => $ensure_fpm,
-    custom_config  => $custom_config_fpm,
+    ensure        => $ensure_fpm,
+    custom_config => $custom_config_fpm,
+    notify        =>  Class['::php::fpm::service']
   }
 
   ::php::fpm::service { $name:
@@ -26,7 +27,7 @@ define php::install (
     enable => $enable_service_fpm,
   }
 
-  create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => Service['::php::fpm::service'], })
+  create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => Class['::php::fpm::service'], })
 
   # Purge default www pool if no pool with this name have been defined
   if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
@@ -34,6 +35,7 @@ define php::install (
       ensure    => absent,
       version   => $name,
       pool_name => 'www',
+      notify    => Class['::php::fpm::service']
     }
   }
 }
