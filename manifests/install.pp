@@ -16,10 +16,11 @@ define php::install (
 
   ::php::fpm::install { $name:
     ensure        => $ensure_fpm,
-    custom_config => $custom_config_fpm
+    custom_config => $custom_config_fpm,
+    notify    => Service['::php::fpm::service'],
   }
 
-  create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name })
+  create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => Service['::php::fpm::service'], })
 
   # Purge default www pool if no pool with this name have been defined
   if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
@@ -27,6 +28,7 @@ define php::install (
       ensure    => absent,
       version   => $name,
       pool_name => 'www',
+      notify    => Service['::php::fpm::service'],
     }
   }
 }

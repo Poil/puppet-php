@@ -68,7 +68,7 @@ define php::fpm::pool (
   # Call
   case $::operatingsystem {
     'Ubuntu': {
-      php::fpm::pool::ubuntu { $name:
+      ::php::fpm::pool::ubuntu { $name:
         ensure    => $ensure,
         pool_name => $pool_name,
         config    => $pool_config,
