@@ -14,7 +14,7 @@ define php::fpm::service::ubuntu (
     }
   }
 
-  service { $package_name:
+  service { $service_name:
     ensure => $ensure,
     enable => $enable,
   }
