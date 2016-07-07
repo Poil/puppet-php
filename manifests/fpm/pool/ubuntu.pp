@@ -1,10 +1,11 @@
 # == define php::fpm::pool::ubuntu
 define php::fpm::pool::ubuntu(
+  $pool_name = $name,
   $config,
   $version,
   $listen,
 ) {
-  $_listen = pick($listen, "/run/php/php${version}-fpm.${name}.sock")
+  $_listen = pick($listen, "/run/php/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {
@@ -19,11 +20,11 @@ define php::fpm::pool::ubuntu(
   }
 
   $default_ubuntu_pool_config = {
-    'path'     => "${config_dir}/fpm/pool.d/${name}.conf",
+    'path'     => "${config_dir}/fpm/pool.d/${pool_name}.conf",
   }
 
   $default_config = {
-    "${name}"  => {
+    "${pool_name}"  => {
       'listen' => $_listen,
     }
   }

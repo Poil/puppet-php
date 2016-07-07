@@ -1,5 +1,6 @@
 # == define php::fpm::pool
 define php::fpm::pool (
+  $pool_name = $name,
   $version,
   $ensure = 'present',
   $custom_pool_config = {},
@@ -19,7 +20,7 @@ define php::fpm::pool (
 ) {
 
   $default_pool_config = {
-    "${name}"                         => {
+    "${pool_name}"                    => {
       'user'                          => $user,
       'group'                         => $group,
       'listen.owner'                  => $listen_owner,
@@ -32,7 +33,7 @@ define php::fpm::pool (
       'pm.process_idle_timeout'       => $pm_process_idle_timeout,
       'pm.max_requests'               => $pm_max_requests,
       'php_flag[display_errors]'      => 'off',
-      'php_admin_value[error_log]'    => "${log_path}/fpm-php.${name}.log",
+      'php_admin_value[error_log]'    => "${log_path}/fpm-php.${pool_name}.log",
       'php_admin_flag[log_errors]'    => 'on',
       'php_admin_value[memory_limit]' => '128M',
     }
@@ -43,9 +44,10 @@ define php::fpm::pool (
   case $::operatingsystem {
     'Ubuntu': {
       php::fpm::pool::ubuntu { $name:
-        config  => $pool_config,
-        version => $version,
-        listen  => $listen,
+        pool_name => $pool_name,
+        config    => $pool_config,
+        version   => $version,
+        listen    => $listen,
       }
     }
   }
