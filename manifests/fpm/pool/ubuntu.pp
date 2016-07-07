@@ -20,13 +20,15 @@ define php::fpm::pool::ubuntu(
 
   $default_ubuntu_pool_config = {
     'path'     => "${config_dir}/fpm/pool.d/${name}.conf",
+  }
+
+  $default_config = {
     "${name}"  => {
       'listen' => $_listen,
     }
   }
 
-  $myhash = merge($config, $default_ubuntu_pool_config)
-  notify { $myhash: }
+  $pool_config = merge($config, $default_config)
 
-  create_ini_settings($config, $default_ubuntu_pool_config)
+  create_ini_settings($pool_config, $default_ubuntu_pool_config)
 }
