@@ -31,7 +31,7 @@ define php::fpm::pool::ubuntu(
   }
 
   $pool_config = merge($config, $default_config)
-  notify { "${pool_name} => ${ensure}": }
+  notify { "${version} ${pool_name} => ${ensure}": }
 
   case $ensure {
     'present', 'installed': {
