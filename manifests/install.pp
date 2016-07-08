@@ -32,11 +32,16 @@ define php::install (
         notify        =>  ::Php::Fpm::Service[$name],
       }
       ::php::fpm::service { $name:
-        ensure => $ensure_service_fpm,
-        enable => $enable_service_fpm,
+        ensure  => $ensure_service_fpm,
+        enable  => $enable_service_fpm,
+        require => ::Php::Fpm::Install[$name],
       }
 
-      create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => ::Php::Fpm::Service[$name], })
+      create_resources('::php::fpm::pool', $fpm_pools, {
+        version => $name,
+        notify  => ::Php::Fpm::Service[$name],
+        require =>  ::Php::Fpm::Install[$name],
+      })
 
       # Purge default www pool if no pool with this name have been defined
       if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
@@ -44,6 +49,7 @@ define php::install (
           ensure    => absent,
           version   => $name,
           pool_name => 'www',
+          require   => ::Php::Fpm::Install[$name],
           notify    => ::Php::Fpm::Service[$name],
         }
       }
