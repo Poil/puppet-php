@@ -22,11 +22,13 @@ define php::extension::ubuntu (
         '16.04': {
           $package_prefix = 'php7-'
           $ext_tool_enable = 'phpenmod'
+          $ext_tool_disable = 'phpdismod'
           $ext_tool_query = 'phpquery'
         }
         '14.04': {
           $package_prefix = 'php5-'
           $ext_tool_enable = 'php5enmod'
+          $ext_tool_disable = 'php5dismod'
           $ext_tool_query = 'php5query'
         }
         default: {
@@ -39,6 +41,7 @@ define php::extension::ubuntu (
       $binary_path = "/usr/bin/php${name}"
       $package_prefix = "php${php_version}-"
       $ext_tool_enable = "phpenmod -v ${name}"
+      $ext_tool_disable = "phpdismod -v ${name}"
       $ext_tool_query = "phpquery -v ${name}"
     }
     default: {
@@ -58,6 +61,14 @@ define php::extension::ubuntu (
       }
       if !empty($extension_config) {
         create_ini_settings($extension_config, $default_extension_config)
+      }
+
+      ::php::extension::sapi { $enabling_sapi:
+        ensure           => present,
+        module           => $name,
+        ext_tool_query   => $ext_tool_query,
+        ext_tool_enable  => $ext_tool_enable,
+        ext_tool_disable => $ext_tool_disable,
       }
     }
     'absent', 'purged': {
