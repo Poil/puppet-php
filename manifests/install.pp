@@ -16,6 +16,9 @@ define php::install (
   validate_re($ensure_mod_php, '^(present)|(installed)|(absent)$', "ensure_cli is '${ensure_cli}' and must be absent, present or installed")
   validate_re($ensure_fpm, '^(present)|(installed)|(absent)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
 
+  # --------------------
+  # FPM
+  # --------------------
   ::php::fpm::install { $name:
     ensure        => $ensure_fpm,
     custom_config => $custom_config_fpm,
@@ -38,7 +41,16 @@ define php::install (
       ensure    => absent,
       version   => $name,
       pool_name => 'www',
-      notify    => ::Php::Fpm::Service[$name]
+      notify    => ::Php::Fpm::Service[$name],
     }
   }
+
+  # --------------------
+  # mod_php
+  # --------------------
+  ::php::mod_php::install { $name:
+    ensure        => $ensure_mod_php,
+    custom_config => $custom_config_mod_php,
+  }
+
 }
