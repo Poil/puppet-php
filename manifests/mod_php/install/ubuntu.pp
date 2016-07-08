@@ -22,12 +22,22 @@ define php::mod_php::install::ubuntu (
     ensure => $ensure,
   }
 
-  $default_mod_php_config = {
-    'path' => "${config_dir}/apache2/php.ini"
+  case $ensure {
+    'present', 'installed', 'latest': {
+      $default_mod_php_config = {
+        'path' => "${config_dir}/apache2/php.ini"
+      }
+
+      $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      create_ini_settings($mod_php_config, $default_mod_php_config)
+    }
+    'absent', 'purged': {
+      file { "${config_dir}/fpm/php.ini":
+        ensure => absent
+      }
+    }
+    default: {
+      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+    }
   }
-
-  $mod_php_config = deep_merge($::php::default_hardening_config, $custom_config)
-
-  create_ini_settings($mod_php_config, $default_mod_php_config)
-
 }

@@ -22,12 +22,22 @@ define php::fpm::install::ubuntu (
     ensure => $ensure,
   }
 
-  $default_fpm_config = {
-    'path' => "${config_dir}/fpm/php.ini"
+  case $ensure {
+    'present', 'installed', 'latest': {
+      $default_fpm_config = {
+        'path' => "${config_dir}/fpm/php.ini"
+      }
+
+      $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      create_ini_settings($fpm_config, $default_fpm_config)
+    }
+    'absent', 'purged': {
+      file { "${config_dir}/fpm/php.ini":
+        ensure => absent
+      }
+    }
+    default: {
+      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+    }
   }
-
-  $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-
-  create_ini_settings($fpm_config, $default_fpm_config)
-
 }

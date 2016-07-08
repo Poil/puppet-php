@@ -22,12 +22,22 @@ define php::cli::install::ubuntu (
     ensure => $ensure,
   }
 
-  $default_cli_config = {
-    'path' => "${config_dir}/cli/php.ini"
+  case $ensure {
+    'present', 'installed', 'latest': {
+      $default_cli_config = {
+        'path' => "${config_dir}/cli/php.ini"
+      }
+
+      $cli_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      create_ini_settings($cli_config, $default_cli_config)
+    }
+    'absent', 'purged': {
+      file { "${config_dir}/cli/php.ini":
+        ensure => absent
+      }
+    }
+    default: {
+      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+    }
   }
-
-  $cli_config = deep_merge($::php::default_hardening_config, $custom_config)
-
-  create_ini_settings($cli_config, $default_cli_config)
-
 }

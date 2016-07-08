@@ -33,10 +33,10 @@ define php::fpm::pool::ubuntu(
   $pool_config = deep_merge($config, $default_config)
 
   case $ensure {
-    'present', 'installed': {
+    'present', 'installed', 'latest': {
       create_ini_settings($pool_config, $default_ubuntu_pool_config)
     }
-    'absent': {
+    'absent', 'purged': {
       file { "${config_dir}/fpm/pool.d/${pool_name}.conf":
         ensure => absent
       }
