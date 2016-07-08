@@ -64,7 +64,8 @@ define php::extension::ubuntu (
       }
 
       if !empty($enabling_sapi) {
-        ::php::extension::sapi { "enabling/${enabling_sapi}":
+        $p_enabling_sapi = prefix($enabling_sapi, 'enabling/')
+        ::php::extension::sapi { $p_enabling_sapi:
           ensure           => present,
           module           => $name,
           ext_tool_query   => $ext_tool_query,
@@ -73,7 +74,8 @@ define php::extension::ubuntu (
         }
       }
       if !empty($disabling_sapi) {
-        ::php::extension::sapi { "disabling/${disabling_sapi}":
+        $p_disabling_sapi = prefix($disabling_sapi, 'disabling/')
+        ::php::extension::sapi { $p_disabling_sapi:
           ensure           => absent,
           module           => $name,
           ext_tool_query   => $ext_tool_query,
