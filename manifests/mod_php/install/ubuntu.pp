@@ -37,7 +37,7 @@ define php::mod_php::install::ubuntu (
       }
     }
     'absent', 'purged': {
-      file { "${config_dir}/fpm/php.ini":
+      file { "${config_dir}/mod_php/php.ini":
         ensure => absent
       }
     }
