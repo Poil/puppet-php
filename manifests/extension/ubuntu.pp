@@ -1,7 +1,18 @@
 define php::extension::ubuntu (
   $ensure,
   $php_version,
+  $extension_config = {},
 ) {
+  $available_sapi = ['fpm', 'apache2', 'cli']
+
+  if has_key($extension_config, 'sapi') {
+    $enabling_sapi = $extension_config['sapi']
+    $disabling_sapi = difference($available_sapi, $extension_config['sapi'])
+  } else {
+    $enabling_sapi = 'ALL'
+    $disabling_sapi = []
+  }
+
   case $::php::repo {
     'distrib': {
       $config_dir = '/etc/php5'
@@ -9,9 +20,13 @@ define php::extension::ubuntu (
       case $::operatingsystemmajrelease {
         '16.04': {
           $package_prefix = 'php7-'
+          $ext_tool_enable = 'phpenmod'
+          $ext_tool_query = 'phpquery'
         }
         '14.04': {
           $package_prefix = 'php5-'
+          $ext_tool_enable = 'php5enmod'
+          $ext_tool_query = 'php5query'
         }
         default: {
           fail("Error - ${module_name}, Unknown OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -22,6 +37,8 @@ define php::extension::ubuntu (
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
       $package_prefix = "php${php_version}-"
+      $ext_tool_enable = "phpenmod -v ${name}"
+      $ext_tool_query = "phpquery -v ${name}"
     }
     default: {
       fail("Error - ${module_name}, Unknown repository ${::php::repo}")
@@ -33,22 +50,22 @@ define php::extension::ubuntu (
     ensure => $ensure,
   }
 
-  #case $ensure {
-  #  'present', 'installed', 'latest': {
-  #    $default_fpm_config = {
-  #      'path' => "${config_dir}/fpm/php.ini"
-  #    }
-
-  #    $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-  #    create_ini_settings($fpm_config, $default_fpm_config)
-  #  }
-  #  'absent', 'purged': {
-  #    file { "${config_dir}/fpm/php.ini":
-  #      ensure => absent
-  #    }
-  #  }
-  #  default: {
-  #    fail("Error - ${module_name}, unknown ensure value '${ensure}'")
-  #  }
-  #}
+  case $ensure {
+    'present', 'installed', 'latest': {
+      $default_extension_config = {
+        'path' => "${config_dir}/mods-available/${name}.ini"
+      }
+      if !empty($extension_config) {
+        create_ini_settings($extension_config, $default_extension_config)
+      }
+    }
+    'absent', 'purged': {
+      file { "${config_dir}/mods-available/${name}.ini":
+        ensure => absent
+      }
+    }
+    default: {
+      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+    }
+  }
 }
