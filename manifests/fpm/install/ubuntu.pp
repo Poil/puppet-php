@@ -22,12 +22,12 @@ define php::fpm::install::ubuntu (
     ensure => $ensure,
   }
 
-  $default_fpm_conf = {
+  $default_fpm_config = {
     'path' => "${config_dir}/fpm/php.ini"
   }
 
-  $config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+  $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
 
-  create_ini_settings($custom_config, $default_fpm_conf)
+  create_ini_settings($fpm_config, $default_fpm_config)
 
 }

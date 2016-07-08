@@ -22,12 +22,12 @@ define php::mod_php::install::ubuntu (
     ensure => $ensure,
   }
 
-  $default_mod_php_conf = {
+  $default_mod_php_config = {
     'path' => "${config_dir}/apache2/php.ini"
   }
 
-  $config = deep_merge($::php::default_hardening_config, $custom_config)
+  $mod_php_config = deep_merge($::php::default_hardening_config, $custom_config)
 
-  create_ini_settings($custom_config, $default_mod_php_conf)
+  create_ini_settings($mod_php_config, $default_mod_php_config)
 
 }
