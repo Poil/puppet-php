@@ -9,7 +9,7 @@ define php::install (
   $enable_service_fpm = true,
   $custom_config_fpm = {},
   $fpm_pools = {},
-  $modules = {},
+  $extensions = {},
 ) {
 
   validate_re($ensure_cli, '^(present)|(installed)|(latest)|(absent)|(purged)$', "ensure_cli is '${ensure_cli}' and must be absent, purged, present, installed or latest")
@@ -65,5 +65,10 @@ define php::install (
     ensure        => $ensure_cli,
     custom_config => $custom_config_cli,
   }
+
+  # --------------------
+  # modules
+  # --------------------
+  create_resources('::php::extension', $extensions, { 'php_version' => $name })  # Todo : notify apache or/and fpm
 }
 
