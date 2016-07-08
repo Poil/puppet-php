@@ -63,19 +63,23 @@ define php::extension::ubuntu (
         create_ini_settings($extension_config, $default_extension_config)
       }
 
-      ::php::extension::sapi { "enabling/${enabling_sapi}":
-        ensure           => present,
-        module           => $name,
-        ext_tool_query   => $ext_tool_query,
-        ext_tool_enable  => $ext_tool_enable,
-        ext_tool_disable => $ext_tool_disable,
+      if !empty($enabling_sapi) {
+        ::php::extension::sapi { "enabling/${enabling_sapi}":
+          ensure           => present,
+          module           => $name,
+          ext_tool_query   => $ext_tool_query,
+          ext_tool_enable  => $ext_tool_enable,
+          ext_tool_disable => $ext_tool_disable,
+        }
       }
-      ::php::extension::sapi { "disabling/${disabling_sapi}":
-        ensure           => absent,
-        module           => $name,
-        ext_tool_query   => $ext_tool_query,
-        ext_tool_enable  => $ext_tool_enable,
-        ext_tool_disable => $ext_tool_disable,
+      if !empty($disabling_sapi) {
+        ::php::extension::sapi { "disabling/${disabling_sapi}":
+          ensure           => absent,
+          module           => $name,
+          ext_tool_query   => $ext_tool_query,
+          ext_tool_enable  => $ext_tool_enable,
+          ext_tool_disable => $ext_tool_disable,
+        }
       }
     }
     'absent', 'purged': {
