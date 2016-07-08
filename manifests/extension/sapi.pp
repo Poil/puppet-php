@@ -1,5 +1,6 @@
 define php::extension::sapi (
-  $ensure
+  $ensure,
+  $php_version,
 ) {
 
 }
