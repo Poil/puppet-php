@@ -1,6 +1,6 @@
 define php::mod_php::install (
-  $ensure,
-  $custom_config,
+  $ensure = 'present',
+  $custom_config = {},
 ) {
   case $::operatingsystem {
     'Ubuntu': {
