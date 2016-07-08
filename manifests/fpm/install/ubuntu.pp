@@ -26,11 +26,15 @@ define php::fpm::install::ubuntu (
     'present', 'installed', 'latest': {
       $default_fpm_config = {
         'path'    => "${config_dir}/fpm/php.ini",
-        'require' => "Package[${package_name}]"
       }
 
       $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-      create_ini_settings($fpm_config, $default_fpm_config)
+
+      ::php::config { $name:
+        custom_config  => $fpm_config,
+        custom_default => $default_fpm_config,
+        require        => Package[$package_name],
+      }
     }
     'absent', 'purged': {
       file { "${config_dir}/fpm/php.ini":

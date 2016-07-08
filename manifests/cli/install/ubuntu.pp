@@ -26,11 +26,15 @@ define php::cli::install::ubuntu (
     'present', 'installed', 'latest': {
       $default_cli_config = {
         'path'    => "${config_dir}/cli/php.ini",
-        'require' => "Package[${package_name}]"
       }
 
       $cli_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-      create_ini_settings($cli_config, $default_cli_config)
+
+      ::php::config { $name:
+        custom_config  => $cli_config,
+        custom_default => $default_cli_config,
+        require        => Package[$package_name],
+      }
     }
     'absent', 'purged': {
       file { "${config_dir}/cli/php.ini":

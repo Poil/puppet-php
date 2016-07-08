@@ -25,12 +25,16 @@ define php::mod_php::install::ubuntu (
   case $ensure {
     'present', 'installed', 'latest': {
       $default_mod_php_config = {
-        'path'    => "${config_dir}/apache2/php.ini"
-        'require' => "Package[${package_name}]"
+        'path'    => "${config_dir}/apache2/php.ini",
       }
 
       $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-      create_ini_settings($mod_php_config, $default_mod_php_config)
+
+      ::php::config { $name:
+        custom_config  => $mod_php_config,
+        custom_default => $default_mod_php_config,
+        require        => Package[$package_name],
+      }
     }
     'absent', 'purged': {
       file { "${config_dir}/fpm/php.ini":
