@@ -5,15 +5,17 @@ define php::extension::sapi (
   $ext_tool_enable,
   $ext_tool_disable,
 ) {
+  $sapi_tmp = split($name, '/')
+  $sapi = $sapi_tmp[1]
   case $ensure {
     'absent' : {
-      exec { "${ext_tool_disable} -m ${module} -s ${name}":
-        onlyif  => "${ext_tool_query} -s ${name} -m ${name}",
+      exec { "${ext_tool_disable} -m ${module} -s ${sapi}":
+        onlyif  => "${ext_tool_query} -s ${sapi} -m ${module}",
       }
     }
     'present' : {
-      exec { "${ext_tool_enable} -m ${module} -s ${name}":
-        unless  => "${ext_tool_query} -s ${name} -m ${name}",
+      exec { "${ext_tool_enable} -m ${module} -s ${sapi}":
+        unless  => "${ext_tool_query} -s ${sapi} -m ${module}",
       }
     }
     default : {
