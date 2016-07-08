@@ -19,29 +19,34 @@ define php::install (
   # --------------------
   # FPM
   # --------------------
-  ::php::fpm::install { $name:
-    ensure        => $ensure_fpm,
-    custom_config => $custom_config_fpm,
-    notify        =>  ::Php::Fpm::Service[$name],
-  }
-
-  # Manage FPM Service only if installed
-  if ($ensure_fpm != 'absent') {
-    ::php::fpm::service { $name:
-      ensure => $ensure_service_fpm,
-      enable => $enable_service_fpm,
+  case $ensure_fpm {
+    'absent': {
+      ::php::fpm::install { $name:
+        ensure        => $ensure_fpm,
+      }
     }
-  }
+    default : {
+      ::php::fpm::install { $name:
+        ensure        => $ensure_fpm,
+        custom_config => $custom_config_fpm,
+        notify        =>  ::Php::Fpm::Service[$name],
+      }
+      ::php::fpm::service { $name:
+        ensure => $ensure_service_fpm,
+        enable => $enable_service_fpm,
+      }
 
-  create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => ::Php::Fpm::Service[$name], })
+      create_resources('::php::fpm::pool', $fpm_pools, { 'version' => $name, notify => ::Php::Fpm::Service[$name], })
 
-  # Purge default www pool if no pool with this name have been defined
-  if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
-    ::php::fpm::pool { "${name}-www" :
-      ensure    => absent,
-      version   => $name,
-      pool_name => 'www',
-      notify    => ::Php::Fpm::Service[$name],
+      # Purge default www pool if no pool with this name have been defined
+      if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
+        ::php::fpm::pool { "${name}-www" :
+          ensure    => absent,
+          version   => $name,
+          pool_name => 'www',
+          notify    => ::Php::Fpm::Service[$name],
+        }
+      }
     }
   }
 
