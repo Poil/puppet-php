@@ -40,9 +40,9 @@ define php::extension::ubuntu (
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
       $package_prefix = "php${php_version}-"
-      $ext_tool_enable = "phpenmod -v ${name}"
-      $ext_tool_disable = "phpdismod -v ${name}"
-      $ext_tool_query = "phpquery -v ${name}"
+      $ext_tool_enable = "phpenmod -v ${php_version}"
+      $ext_tool_disable = "phpdismod -v ${php_version}"
+      $ext_tool_query = "phpquery -v ${php_version}"
     }
     default: {
       fail("Error - ${module_name}, Unknown repository ${::php::repo}")
@@ -65,6 +65,13 @@ define php::extension::ubuntu (
 
       ::php::extension::sapi { $enabling_sapi:
         ensure           => present,
+        module           => $name,
+        ext_tool_query   => $ext_tool_query,
+        ext_tool_enable  => $ext_tool_enable,
+        ext_tool_disable => $ext_tool_disable,
+      }
+      ::php::extension::sapi { $disabling_sapi:
+        ensure           => absent,
         module           => $name,
         ext_tool_query   => $ext_tool_query,
         ext_tool_enable  => $ext_tool_enable,
