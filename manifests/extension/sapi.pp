@@ -10,12 +10,12 @@ define php::extension::sapi (
   case $ensure {
     'absent' : {
       exec { "${ext_tool_disable} -m ${module} -s ${sapi}":
-        onlyif  => "${ext_tool_query} -s ${sapi} -m ${module}",
+        onlyif  => "${ext_tool_query} -s ${sapi} -m ${module} | grep Enabled",
       }
     }
     'present' : {
       exec { "${ext_tool_enable} -m ${module} -s ${sapi}":
-        unless  => "${ext_tool_query} -s ${sapi} -m ${module}",
+        unless  => "${ext_tool_query} -s ${sapi} -m ${module} | grep Enabled",
       }
     }
     default : {
