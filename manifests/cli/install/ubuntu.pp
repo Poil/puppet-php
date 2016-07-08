@@ -32,7 +32,7 @@ define php::cli::install::ubuntu (
 
       ::php::config { "cli_${name}":
         custom_config  => $cli_config,
-        custom_default => $default_cli_config,
+        default_config => $default_cli_config,
         require        => Package[$package_name],
       }
     }

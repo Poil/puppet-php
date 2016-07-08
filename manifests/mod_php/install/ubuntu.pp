@@ -32,7 +32,7 @@ define php::mod_php::install::ubuntu (
 
       ::php::config { "mod_php_${name}":
         custom_config  => $mod_php_config,
-        custom_default => $default_mod_php_config,
+        default_config => $default_mod_php_config,
         require        => Package[$package_name],
       }
     }

@@ -32,7 +32,7 @@ define php::fpm::install::ubuntu (
 
       ::php::config { "fpm_${name}":
         custom_config  => $fpm_config,
-        custom_default => $default_fpm_config,
+        default_config => $default_fpm_config,
         require        => Package[$package_name],
       }
     }
