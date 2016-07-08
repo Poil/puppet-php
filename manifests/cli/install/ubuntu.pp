@@ -26,7 +26,7 @@ define php::cli::install::ubuntu (
     'present', 'installed', 'latest': {
       $default_cli_config = {
         'path'    => "${config_dir}/cli/php.ini",
-        'require' => Package[$package_name],
+        'require' => "Package[${package_name}]",
       }
 
       $cli_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
