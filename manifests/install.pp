@@ -12,15 +12,15 @@ define php::install (
   $modules = {},
 ) {
 
-  validate_re($ensure_cli, '^(present)|(installed)|(absent)$', "ensure_cli is '${ensure_cli}' and must be absent, present or installed")
-  validate_re($ensure_mod_php, '^(present)|(installed)|(absent)$', "ensure_cli is '${ensure_cli}' and must be absent, present or installed")
-  validate_re($ensure_fpm, '^(present)|(installed)|(absent)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
+  validate_re($ensure_cli, '^(present)|(installed)|(latest)|(absent)|(purge)$', "ensure_cli is '${ensure_cli}' and must be absent, present or installed")
+  validate_re($ensure_mod_php, '^(present)|(installed)|(latest)|(absent)|(purge)', "ensure_cli is '${ensure_cli}' and must be absent, present or installed")
+  validate_re($ensure_fpm, '^^(present)|(installed)|(latest)|(absent)|(purge)$', "ensure_fpm, is '${ensure_cli}' and must be absent, present or installed")
 
   # --------------------
   # FPM
   # --------------------
   case $ensure_fpm {
-    'absent': {
+    'absent', 'purge': {
       ::php::fpm::install { $name:
         ensure        => $ensure_fpm,
       }
