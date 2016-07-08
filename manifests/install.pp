@@ -63,7 +63,7 @@ define php::install (
   # --------------------
   ::php::cli::install { $name:
     ensure        => $ensure_cli,
-    custom_config => $custom_config_mod_php,
+    custom_config => $custom_config_cli,
   }
 }
 
