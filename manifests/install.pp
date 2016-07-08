@@ -20,7 +20,7 @@ define php::install (
   # FPM
   # --------------------
   case $ensure_fpm {
-    'absent', 'purge': {
+    'absent', 'purged': {
       ::php::fpm::install { $name:
         ensure        => $ensure_fpm,
       }
