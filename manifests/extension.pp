@@ -2,7 +2,7 @@
 define php::extension (
   $ensure,
   $php_version,
-  $sapi = 'ALL',
+  $sapi = [],
 ) {
 
   case $::operatingsystem {

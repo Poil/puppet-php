@@ -1,16 +1,16 @@
 define php::extension::ubuntu (
   $ensure,
   $php_version,
-  $sapi = 'ALL',
+  $sapi = [],
   $extension_config = {},
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
-  if $sapi != 'ALL' {
-    $enabling_sapi = $extension_config['sapi']
-    $disabling_sapi = difference($available_sapi, $extension_config['sapi'])
+  if empty($sapi) {
+    $enabling_sapi = $sapi
+    $disabling_sapi = difference($available_sapi, $sapi)
   } else {
-    $enabling_sapi = 'ALL'
+    $enabling_sapi = ['ALL']
     $disabling_sapi = []
   }
 
