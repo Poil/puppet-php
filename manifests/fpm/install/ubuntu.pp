@@ -30,7 +30,7 @@ define php::fpm::install::ubuntu (
 
       $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
 
-      ::php::config { $name:
+      ::php::config { "fpm_${name}":
         custom_config  => $fpm_config,
         custom_default => $default_fpm_config,
         require        => Package[$package_name],

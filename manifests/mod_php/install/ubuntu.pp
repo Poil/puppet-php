@@ -30,7 +30,7 @@ define php::mod_php::install::ubuntu (
 
       $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
 
-      ::php::config { $name:
+      ::php::config { "mod_php_${name}":
         custom_config  => $mod_php_config,
         custom_default => $default_mod_php_config,
         require        => Package[$package_name],

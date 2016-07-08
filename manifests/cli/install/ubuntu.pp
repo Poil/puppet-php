@@ -30,7 +30,7 @@ define php::cli::install::ubuntu (
 
       $cli_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
 
-      ::php::config { $name:
+      ::php::config { "cli_${name}":
         custom_config  => $cli_config,
         custom_default => $default_cli_config,
         require        => Package[$package_name],
