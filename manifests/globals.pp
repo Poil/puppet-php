@@ -13,7 +13,7 @@ class php::globals {
       'max_input_time'         => '60',
       'memory_limit'           => '128M',
       'display_errors'         => 'Off',
-      'error_reporting'        => 'E_ALL & ~E_DEPRECATED',
+      'error_reporting'        => 'E_ALL & ~E_DEPRECATED & ~E_STRICT',
       'display_startup_errors' => 'Off',
       'log_errors'             => 'On',
       'log_errors_max_len'     => '1024',
@@ -32,7 +32,8 @@ class php::globals {
       'allow_url_fopen'        => 'Off',
       'allow_url_include'      => 'Off',
       'default_socket_timeout' => '60',
-      'date.timezone'          => 'Europe/Paris'
+      'date.timezone'          => 'Europe/Paris',
+      'disable_functions'      => 'pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,',
     }
   }
   case $::operatingsystem {
