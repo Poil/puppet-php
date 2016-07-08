@@ -26,7 +26,7 @@ define php::mod_php::install::ubuntu (
     'present', 'installed', 'latest': {
       $default_mod_php_config = {
         'path'    => "${config_dir}/apache2/php.ini"
-        'require' => "Package[${package_name}]",
+        'require' => "Package[${package_name}]"
       }
 
       $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)

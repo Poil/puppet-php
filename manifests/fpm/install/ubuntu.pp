@@ -26,7 +26,7 @@ define php::fpm::install::ubuntu (
     'present', 'installed', 'latest': {
       $default_fpm_config = {
         'path'    => "${config_dir}/fpm/php.ini",
-        'require' => "Package[${package_name}]",
+        'require' => "Package[${package_name}]"
       }
 
       $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
