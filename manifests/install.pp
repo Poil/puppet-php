@@ -1,10 +1,10 @@
 # == define php::install
 define php::install (
-  $ensure_cli = present,
+  $ensure_cli = 'present',
   $custom_config_cli = {},
-  $ensure_mod_php = absent,
+  $ensure_mod_php = 'absent',
   $custom_config_mod_php = {},
-  $ensure_fpm = absent,
+  $ensure_fpm = 'absent',
   $ensure_service_fpm = 'running',
   $enable_service_fpm = true,
   $custom_config_fpm = {},
