@@ -26,7 +26,7 @@ define php::mod_php::install::ubuntu (
     'path' => "${config_dir}/apache2/php.ini"
   }
 
-  $config = deep_merge($::php::default_hardening_conf, $custom_config)
+  $config = deep_merge($::php::default_hardening_config, $custom_config)
 
   create_ini_settings($custom_config, $default_mod_php_conf)
 
