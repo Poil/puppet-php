@@ -12,10 +12,15 @@ class php::repo::ubuntu (
     warning('php::repo::ubuntu is private')
   }
 
+  ensure_packages(['python-software-properties', 'software-properties-common'])
+
   $versions_keys = keys($::php::versions)
 
   include '::apt'
 
-  ::apt::ppa { 'ppa:ondrej/php': ensure => $ensure }
+  ::apt::ppa { 'ppa:ondrej/php':
+    ensure  => $ensure,
+    require => Package['software-properties-common']
+  }
 }
 
