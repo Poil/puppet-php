@@ -6,7 +6,7 @@ define php::extension::sapi (
   $ext_tool_disable,
 ) {
   $sapi_tmp = split($name, '/')
-  $sapi = $sapi_tmp[2]
+  $sapi = $sapi_tmp[3]
 
   case $sapi {
     'ALL' : {
