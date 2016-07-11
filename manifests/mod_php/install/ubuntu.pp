@@ -20,6 +20,7 @@ define php::mod_php::install::ubuntu (
 
   package { $package_name:
     ensure => $ensure,
+    notify => Service['apache2'],
   }
 
   case $ensure {
@@ -34,6 +35,7 @@ define php::mod_php::install::ubuntu (
         custom_config  => $mod_php_config,
         default_config => $default_mod_php_config,
         require        => Package[$package_name],
+        notify         => Service['apache2'],
       }
     }
     'absent', 'purged': {
