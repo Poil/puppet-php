@@ -3,6 +3,7 @@ define php::extension (
   $ensure,
   $php_version,
   $sapi = ['ALL'],
+  $extension_config = {},
   $package_prefix = undef,
 ) {
 

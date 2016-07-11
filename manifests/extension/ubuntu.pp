@@ -1,9 +1,10 @@
+# == define php::extension::ubuntu
 define php::extension::ubuntu (
   $ensure,
   $php_version,
-  $sapi = [],
-  $extension_config = {},
-  $package_prefix = undef,
+  $sapi,
+  $extension_config,
+  $package_prefix,
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
