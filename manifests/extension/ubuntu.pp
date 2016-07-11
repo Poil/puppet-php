@@ -3,6 +3,7 @@ define php::extension::ubuntu (
   $php_version,
   $sapi = [],
   $extension_config = {},
+  $package_prefix = undef,
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
@@ -20,13 +21,13 @@ define php::extension::ubuntu (
       $binary_path = '/usr/bin/php5'
       case $::operatingsystemmajrelease {
         '16.04': {
-          $package_prefix = 'php7-'
+          $_package_prefix = pick($package_prefix, 'php7-')
           $ext_tool_enable = 'phpenmod'
           $ext_tool_disable = 'phpdismod'
           $ext_tool_query = 'phpquery'
         }
         '14.04': {
-          $package_prefix = 'php5-'
+          $_package_prefix = pick($package_prefix, 'php5-')
           $ext_tool_enable = 'php5enmod'
           $ext_tool_disable = 'php5dismod'
           $ext_tool_query = 'php5query'
@@ -39,7 +40,7 @@ define php::extension::ubuntu (
     'ondrej': {
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
-      $package_prefix = "php${php_version}-"
+      $_package_prefix = pick($package_prefix, "php${php_version}-")
       $ext_tool_enable = "phpenmod -v ${php_version}"
       $ext_tool_disable = "phpdismod -v ${php_version}"
       $ext_tool_query = "phpquery -v ${php_version}"
@@ -48,7 +49,7 @@ define php::extension::ubuntu (
       fail("Error - ${module_name}, Unknown repository ${::php::repo}")
     }
   }
-  $extension_name = "${package_prefix}${name}"
+  $extension_name = "${_package_prefix}${name}"
 
   package { $extension_name:
     ensure => $ensure,
