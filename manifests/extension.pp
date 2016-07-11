@@ -10,10 +10,11 @@ define php::extension (
   case $::operatingsystem {
     'Ubuntu': {
       ::php::extension::ubuntu { $name:
-        ensure         => $ensure,
-        php_version    => $php_version,
-        sapi           => $sapi,
-        package_prefix => $package_prefix,
+        ensure           => $ensure,
+        php_version      => $php_version,
+        sapi             => $sapi,
+        extension_config => $extension_config,
+        package_prefix   => $package_prefix,
       }
     }
     default: {
