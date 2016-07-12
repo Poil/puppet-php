@@ -6,6 +6,8 @@ class php::params {
 
   case $::operatingsystem {
     'Debian': {
+      $apache_service_name = 'apache2'
+      $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '7': {
           $version = ['5.4']
@@ -19,6 +21,8 @@ class php::params {
       }
     }
     'Ubuntu': {
+      $apache_service_name = 'apache2'
+      $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '14.04': {
           $version = ['5.5']
@@ -32,6 +36,8 @@ class php::params {
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {
+      $apache_service_name = 'httpd'
+      $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '6': {
           $version = ['5.3']

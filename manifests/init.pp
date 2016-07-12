@@ -1,8 +1,10 @@
 # == Class PHP
 class php (
-  $versions        = $::php::params::version,
-  $repo            = $::php::params::repo,
-  $log_path        = '/var/log',
+  $versions            = $::php::params::version,
+  $repo                = $::php::params::repo,
+  $log_path            = '/var/log',
+  $apache_service_name = $::php::params::apache_service_name,
+  $nginx_service_name  = $::php::params::nginx_service_name,
 ) inherits php::params {
 
   # ------------------------

@@ -18,13 +18,14 @@ define php::mod_php::install::ubuntu (
     }
   }
 
-  package { $package_name:
-    ensure => $ensure,
-    notify => Service['apache2'],
-  }
 
   case $ensure {
     'present', 'installed', 'latest': {
+      package { $package_name:
+        ensure => $ensure,
+        notify => Service['apache2'],
+      }
+
       $default_mod_php_config = {
         'path'    => "${config_dir}/apache2/php.ini",
       }
@@ -35,10 +36,14 @@ define php::mod_php::install::ubuntu (
         custom_config  => $mod_php_config,
         default_config => $default_mod_php_config,
         require        => Package[$package_name],
-        notify         => Service['apache2'],
+        notify         => Service[$::php::apache2_service_name],
       }
     }
     'absent', 'purged': {
+      package { $package_name:
+        ensure => $ensure,
+      }
+
       file { "${config_dir}/mod_php/php.ini":
         ensure => absent
       }
