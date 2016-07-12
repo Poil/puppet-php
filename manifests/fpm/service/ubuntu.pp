@@ -4,7 +4,17 @@ define php::fpm::service::ubuntu (
 ) {
   case $::php::repo {
     'distrib': {
-      $service_name = 'php5-fpm'
+      case $::operatingsystemmajrelease {
+        '12.04', '14.04': {
+          $service_name = 'php5-fpm'
+        }
+        '16.04': {
+          $service_name = 'php7.0-fpm'
+        }
+        default: {
+          fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
+        }
+      }
     }
     'ondrej': {
       $service_name = "php${name}-fpm"
