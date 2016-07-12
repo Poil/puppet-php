@@ -12,7 +12,7 @@ define php::mod_php::install::ubuntu (
         }
         '16.04': {
           $package_name = 'libapache2-mod-php'
-          $config_dir = '/etc/php7'
+          $config_dir = '/etc/php/7.0'
           $binary_path = '/usr/bin/php7'
         }
         default: {

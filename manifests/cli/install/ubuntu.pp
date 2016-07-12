@@ -12,7 +12,7 @@ define php::cli::install::ubuntu (
         }
         '16.04': {
           $package_name = 'php7.0-cli'
-          $config_dir = '/etc/php7'
+          $config_dir = '/etc/php/7.0'
           $binary_path = '/usr/bin/php7'
         }
         default: {
