@@ -11,7 +11,7 @@ define php::cli::install::ubuntu (
           $binary_path = '/usr/bin/php5'
         }
         '16.04': {
-          $package_name = 'php7-cli'
+          $package_name = 'php7.0-cli'
           $config_dir = '/etc/php7'
           $binary_path = '/usr/bin/php7'
         }

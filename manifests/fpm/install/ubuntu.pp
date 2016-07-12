@@ -11,7 +11,7 @@ define php::fpm::install::ubuntu (
           $binary_path = '/usr/bin/php5'
         }
         '16.04': {
-          $package_name = 'php7-fpm'
+          $package_name = 'php7.0-fpm'
           $config_dir = '/etc/php7'
           $binary_path = '/usr/bin/php7'
         }
