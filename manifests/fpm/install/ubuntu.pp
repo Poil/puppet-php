@@ -4,9 +4,21 @@ define php::fpm::install::ubuntu (
 ) {
   case $::php::repo {
     'distrib': {
-      $package_name = 'php5-fpm'
-      $config_dir = '/etc/php5'
-      $binary_path = '/usr/bin/php5'
+      case $::operatingsystemmajrelease {
+        '12.04', '14.04': {
+          $package_name = 'php5-fpm'
+          $config_dir = '/etc/php5'
+          $binary_path = '/usr/bin/php5'
+        }
+        '16.04': {
+          $package_name = 'php7-fpm'
+          $config_dir = '/etc/php7'
+          $binary_path = '/usr/bin/php7'
+        }
+        default: {
+          fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
+        }
+      }
     }
     'ondrej': {
       $package_name = "php${name}-fpm"
