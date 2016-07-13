@@ -48,7 +48,7 @@ define php::mod_php::install::ubuntu (
         custom_config  => $mod_php_config,
         default_config => $default_mod_php_config,
         require        => Package[$package_name],
-        notify         => Service[$::php::apache2_service_name],
+        notify         => Service[$::php::apache_service_name],
       }
     }
     'absent', 'purged': {
