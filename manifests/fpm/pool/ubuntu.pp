@@ -10,7 +10,17 @@ define php::fpm::pool::ubuntu(
 
   case $::php::repo {
     'distrib': {
-      $config_dir = '/etc/php5'
+      case $::operatingsystemmajrelease {
+        '12.04', '14.04': {
+          $config_dir = '/etc/php5'
+        }
+        '16.04': {
+          $config_dir = '/etc/php/7.0'
+        }
+        default: {
+          fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
+        }
+      }
     }
     'ondrej': {
       $config_dir = "/etc/php/${version}"
