@@ -3,6 +3,8 @@ class php (
   $versions            = $::php::params::version,
   $repo                = $::php::params::repo,
   $log_path            = '/var/log',
+  $tmp_path            = '/tmp',
+  $session_save_path   = '/var/lib/php/sessions',
   $apache_service_name = $::php::params::apache_service_name,
   $nginx_service_name  = $::php::params::nginx_service_name,
 ) inherits php::params {
@@ -48,6 +50,7 @@ class php (
   # Let's go
   # ------------------------
   class { '::php::globals': } ->
+  class { '::php::folders': } ->
   class { '::php::repo': repo => $repo }
   create_resources('::php::install', $versions, { 'require' => Class['::php::repo'], })
 }
