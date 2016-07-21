@@ -2,7 +2,7 @@
 class php (
   $versions            = $::php::params::version,
   $repo                = $::php::params::repo,
-  $centos_mirror_url   = 'http://ftp.ciril.fr/pub/linux/centos/',
+  $centos_mirror_url   = 'http://ftp.ciril.fr/pub/linux',
   $log_path            = '/var/log',
   $tmp_path            = '/tmp',
   $session_save_path   = undef,
