@@ -22,25 +22,27 @@ define php::install (
   case $ensure_fpm {
     'absent', 'purged': {
       ::php::fpm::install { $name:
-        ensure        => $ensure_fpm,
+        ensure => $ensure_fpm,
+        before => Class['::php::folders'],
       }
     }
     default : {
       ::php::fpm::install { $name:
         ensure        => $ensure_fpm,
         custom_config => $custom_config_fpm,
-        notify        =>  ::Php::Fpm::Service[$name],
+        notify        => ::Php::Fpm::Service[$name],
+        before        => Class['::php::folders'],
       }
       ::php::fpm::service { $name:
         ensure  => $ensure_service_fpm,
         enable  => $enable_service_fpm,
-        require => ::Php::Fpm::Install[$name],
+        require => [::Php::Fpm::Install[$name], Class['::php::folders']],
       }
 
       create_resources('::php::fpm::pool', $fpm_pools, {
         version => $name,
         notify  => ::Php::Fpm::Service[$name],
-        require =>  ::Php::Fpm::Install[$name],
+        require => [::Php::Fpm::Install[$name], Class['::php::folders']],
       })
 
       # Purge default www pool if no pool with this name have been defined
@@ -49,7 +51,7 @@ define php::install (
           ensure    => absent,
           version   => $name,
           pool_name => 'www',
-          require   => ::Php::Fpm::Install[$name],
+          require => [::Php::Fpm::Install[$name], Class['::php::folders']],
           notify    => ::Php::Fpm::Service[$name],
         }
       }
@@ -62,6 +64,7 @@ define php::install (
   ::php::mod_php::install { $name:
     ensure        => $ensure_mod_php,
     custom_config => $custom_config_mod_php,
+    before        => Class['::php::folders'],
   }
 
   # --------------------
@@ -70,11 +73,17 @@ define php::install (
   ::php::cli::install { $name:
     ensure        => $ensure_cli,
     custom_config => $custom_config_cli,
+    before        => Class['::php::folders'],
   }
 
   # --------------------
   # modules
   # --------------------
   create_resources('::php::extension', $extensions, { 'php_version' => $name })  # Todo : notify apache or/and fpm
+
+  # --------------------
+  # custom folders
+  # --------------------
+  class { '::php::folders': }
 }
 

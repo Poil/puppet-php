@@ -50,7 +50,6 @@ class php (
   # Let's go
   # ------------------------
   class { '::php::globals': } ->
-  class { '::php::folders': } ->
   class { '::php::repo': repo => $repo }
   create_resources('::php::install', $versions, { 'require' => Class['::php::repo'], })
 }
