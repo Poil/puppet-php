@@ -10,7 +10,10 @@ define php::fpm::install (
       }
     }
     'Debian': {
-      #::php::fpm::install::debian { $name: ensure => $ensure}
+      ::php::fpm::install::debian { $name :
+        ensure         => $ensure,
+        custom_config  => $custom_config,
+      }
     }
     'RedHat', 'CentOS','OracleLinux': {
       #::php::fpm::install::redhat { $name: ensure => $ensure}

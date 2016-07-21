@@ -10,7 +10,10 @@ define php::mod_php::install (
       }
     }
     'Debian': {
-      #::php::mod_php::install::debian { $name: ensure => $ensure}
+      ::php::mod_php::install::debian { $name :
+        ensure         => $ensure,
+        custom_config  => $custom_config,
+      }
     }
     'RedHat', 'CentOS','OracleLinux': {
       #::php::mod_php::install::redhat { $name: ensure => $ensure}
