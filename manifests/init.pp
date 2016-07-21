@@ -52,6 +52,9 @@ class php (
   # ------------------------
   class { '::php::globals': } ->
   class { '::php::repo': repo => $repo }
+
+  class { '::php::folders': }
+
   create_resources('::php::install', $versions, { 'require' => Class['::php::repo'], })
 }
 

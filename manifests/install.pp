@@ -80,10 +80,5 @@ define php::install (
   # modules
   # --------------------
   create_resources('::php::extension', $extensions, { 'php_version' => $name })  # Todo : notify apache or/and fpm
-
-  # --------------------
-  # custom folders
-  # --------------------
-  class { '::php::folders': }
 }
 
