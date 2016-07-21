@@ -19,13 +19,19 @@ class php::repo (
     'Debian': {
       case $repo {
         'distrib': {
-          class { '::php::repo::debian' : ensure => absent }
+          class { '::php::repo::debian':
+            ensure => 'distrib'
+          }
         }
         'dotdeb': {
-          class { '::php::repo::debian' : ensure => present }
+          class { '::php::repo::debian':
+            ensure => 'dotdeb'
+          }
         }
         'sury': {
-          class { '::php::repo::debian' : ensure => present }
+          class { '::php::repo::debian':
+            ensure => 'sury'
+          }
         }
         default : {
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
