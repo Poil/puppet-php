@@ -26,6 +26,8 @@ define php::extension (
         package_prefix   => $package_prefix,
       }
     }
+    'RedHat', 'CentOS', 'OracleLinux': {
+    }
     default: {
       fail("Error - ${module_name}, unsupported OS ${::operatingsytem}")
     }
