@@ -1,3 +1,4 @@
+# == define php::fpm::install
 define php::fpm::install (
   $ensure = 'present',
   $custom_config = {},
@@ -16,7 +17,10 @@ define php::fpm::install (
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
-      #::php::fpm::install::redhat { $name: ensure => $ensure}
+      ::php::fpm::install::redhat { $name :
+        ensure         => $ensure,
+        custom_config  => $custom_config,
+      }
     }
     default: {
     }

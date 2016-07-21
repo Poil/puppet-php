@@ -1,3 +1,4 @@
+# == define php::cli::install
 define php::cli::install (
   $ensure = 'present',
   $custom_config = {},
@@ -16,7 +17,10 @@ define php::cli::install (
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
-      #::php::cli::install::redhat { $name: ensure => $ensure}
+      ::php::cli::install::redhat { $name :
+        ensure        => $ensure,
+        custom_config => $custom_config,
+      }
     }
     default: {
     }

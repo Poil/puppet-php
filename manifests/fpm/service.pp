@@ -10,12 +10,19 @@ define php::fpm::service (
       }
     }
     'Debian': {
-      #::php::fpm::install::debian { $name: ensure => $ensure}
+      ::php::fpm::service::debian { $name :
+        ensure  => $ensure,
+        enable  => $enable
+      }
     }
     'RedHat', 'CentOS','OracleLinux': {
-      #::php::fpm::install::redhat { $name: ensure => $ensure}
+      ::php::fpm::service::redhat { $name :
+        ensure  => $ensure,
+        enable  => $enable
+      }
     }
     default: {
+      fail("Error - ${module_name}, unsupported OperatingSystem ${::operatingsystem}")
     }
   }
 }

@@ -76,6 +76,27 @@ define php::fpm::pool (
         listen    => $listen,
       }
     }
+    'Debian': {
+      ::php::fpm::pool::debian { $name:
+        ensure    => $ensure,
+        pool_name => $pool_name,
+        config    => $pool_config,
+        version   => $version,
+        listen    => $listen,
+      }
+    }
+    'RedHat', 'CentOS', 'OracleLinux': {
+      ::php::fpm::pool::redhat { $name:
+        ensure    => $ensure,
+        pool_name => $pool_name,
+        config    => $pool_config,
+        version   => $version,
+        listen    => $listen,
+      }
+    }
+    default : {
+      fail("Error - ${module_name}, unsupported OperatingSystem ${::operatingsystem}")
+    }
   }
 }
 
