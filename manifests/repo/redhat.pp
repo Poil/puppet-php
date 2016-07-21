@@ -16,6 +16,6 @@ class php::repo::redhat (
     gpgcheck => 1,
     enabled  => 1,
     gpgkey   => 'file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo',
-    require  => File['file:///etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo'],
+    require  => File['/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo'],
   }
 }
