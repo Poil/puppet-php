@@ -13,15 +13,19 @@ class php (
   # ------------------------
   # Validate
   # ------------------------
+  if (is_hash($versions)) {
+    $versions_keys = keys($versions)
+    $versions_str = join($versions_keys, ', ')
+  }
+
   case $::operatingsystem {
     'Debian': {
       if count(keys($versions)) > 1 and ($repo == 'distrib' or $repo == 'dotdeb') {
         fail("error - ${module_name} : ${::operatingsystem} doesn't support multiple php version")
       }
       if $repo == 'sury' {
-        $versions_keys = keys($versions)
         if count(intersection($versions_keys, ['5.6' , '7.0', '7.1'])) != count($versions_keys) {
-          fail("Error - ${module_name} versions ${versions_keys} are not supported by sury repository")
+          fail("Error - ${module_name} versions ${versions_str} are not supported by sury repository")
         }
       }
     }
@@ -30,9 +34,8 @@ class php (
         fail("Error - ${module_name} : On ${::operatingsystem} you must set repo to ondrej to support multiple php version")
       }
       if $repo == 'ondrej' {
-        $versions_keys = keys($versions)
         if count(intersection($versions_keys, ['5.6' , '7.0', '7.1'])) != count($versions_keys) {
-          fail("Error - ${module_name} : Versions ${versions_keys} are not supported by ondrej repository")
+          fail("Error - ${module_name} : Versions ${versions_str} are not supported by ondrej repository")
         }
       }
     }
@@ -43,9 +46,8 @@ class php (
       if $repo == 'scl' {
         case $::operatingsystemmajrelease {
           '6', '7': {
-            $versions_keys = keys($versions)
             if count(intersection($versions_keys, ['5.4' , '5.5', '5.6'])) != count($versions_keys) {
-              fail("Error - ${module_name} versions ${versions_keys} are not supported by scl repository")
+              fail("Error - ${module_name} versions ${versions_str} are not supported by scl repository")
             }
           }
           default : {
