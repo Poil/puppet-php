@@ -24,6 +24,9 @@ class php::params {
       $apache_service_name = 'apache2'
       $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
+        '12.04': {
+          $version = ['5.3']
+        }
         '14.04': {
           $version = ['5.5']
         }

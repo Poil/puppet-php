@@ -1,5 +1,5 @@
-# == define php::extension::ubuntu
-define php::extension::ubuntu (
+# == define php::extension::debian
+define php::extension::debian (
   $ensure,
   $php_version,
   $sapi,
@@ -23,13 +23,7 @@ define php::extension::ubuntu (
       $config_dir = '/etc/php5'
       $binary_path = '/usr/bin/php5'
       case $::operatingsystemmajrelease {
-        '16.04': {
-          $_package_prefix = pick($package_prefix, 'php7-')
-          $ext_tool_enable = 'phpenmod'
-          $ext_tool_disable = 'phpdismod'
-          $ext_tool_query = 'phpquery'
-        }
-        '12.04', '14.04': {
+        '7', '8': {
           $_package_prefix = pick($package_prefix, 'php5-')
           $ext_tool_enable = 'php5enmod'
           $ext_tool_disable = 'php5dismod'
@@ -40,7 +34,7 @@ define php::extension::ubuntu (
         }
       }
     }
-    'ondrej': {
+    'sury': {
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
       $_package_prefix = pick($package_prefix, "php${php_version}-")
