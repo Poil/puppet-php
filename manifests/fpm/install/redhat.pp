@@ -58,8 +58,6 @@ define php::fpm::install::redhat (
         $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
       }
 
-      $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
-
       ::php::config { "fpm_${name}":
         custom_config  => $fpm_config,
         default_config => $default_fpm_config,
