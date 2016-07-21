@@ -20,7 +20,7 @@ define php::fpm::pool::redhat(
       }
     }
     'scl': {
-      case $name {
+      case $version {
         '5.4': {
           $config_dir = '/opt/rh/php54/root/etc'
         }
@@ -31,7 +31,7 @@ define php::fpm::pool::redhat(
           $config_dir = '/opt/rh/rh-php56/root/etc'
         }
         default: {
-          fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
+          fail("Error - ${module_name}, unsupported version ${version} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
       }
     }
