@@ -4,7 +4,7 @@ class php (
   $repo                = $::php::params::repo,
   $log_path            = '/var/log',
   $tmp_path            = '/tmp',
-  $session_save_path   = '/var/lib/php/sessions',
+  $session_save_path   = undef,
   $apache_service_name = $::php::params::apache_service_name,
   $nginx_service_name  = $::php::params::nginx_service_name,
 ) inherits php::params {

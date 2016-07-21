@@ -35,7 +35,11 @@ define php::fpm::install::debian (
         'path'    => "${config_dir}/fpm/php.ini",
       }
 
-      $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      if $::php::session_save_path {
+        $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config, { 'PHP' => { 'session.save_path' => $::php::session_save_path} } )
+      } else {
+        $fpm_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      }
 
       ::php::config { "fpm_${name}":
         custom_config  => $fpm_config,

@@ -1,3 +1,4 @@
+# === define php::mod_php::install::debian
 define php::mod_php::install::debian (
   $ensure,
   $custom_config,
@@ -37,7 +38,11 @@ define php::mod_php::install::debian (
         'path'    => "${config_dir}/apache2/php.ini",
       }
 
-      $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      if $::php::session_save_path {
+        $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config, { 'PHP' => { 'session.save_path' => $::php::session_save_path} } )
+      } else {
+        $mod_php_config = deep_merge($::php::globals::default_hardening_config, $custom_config)
+      }
 
       ::php::config { "mod_php_${name}":
         custom_config  => $mod_php_config,
