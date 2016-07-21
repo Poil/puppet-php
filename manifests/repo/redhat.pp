@@ -11,7 +11,7 @@ class php::repo::redhat (
   }
 
   yumrepo { "Claranet-CentOS-${::operatingsystemmajrelease}":
-    desc     => 'CentOS-SCLo-rh.repo',
+    descr    => 'CentOS-SCLo-rh.repo',
     baseurl  => "${::php::centos_mirror_url}/centos/\$releasever/sclo/\$basearch/rh/",
     gpgcheck => 1,
     enabled  => 1,
