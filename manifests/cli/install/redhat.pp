@@ -29,7 +29,7 @@ define php::cli::install::redhat (
         }
         '5.6': {
           $package_name = 'rh-php56-php-cli'
-          $config_dir = '/opt/rh/rh-php56/root/etc'
+          $config_dir = '/etc/opt/rh/rh-php56'
           $binary_path = '/opt/rh/rh-php56/root/bin/php'
         }
         default: {
