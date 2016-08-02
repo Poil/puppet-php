@@ -16,4 +16,14 @@ class php::folders {
       mode   => '1733',
     }
   }
+
+  # Manage log directory if not the default one (/var/log)
+  if $::php::log_path != $::php::params::log_path {
+    file { $::php::log_path :
+      ensure => directory,
+      owner  => 'root',
+      group  => 'root',
+      mode   => '0755',
+    }
+  }
 }
