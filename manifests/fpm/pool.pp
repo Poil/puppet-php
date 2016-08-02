@@ -62,11 +62,27 @@ define php::fpm::pool (
     }
   }
 
-  file {"${log_path}/php${version}-fpm.${pool_name}":
-    ensure => directory,
-    owner  => $user,
-    group  => $group,
-    mode   => '0755'
+  case $ensure {
+    'absent': {
+      file {"${log_path}/php${version}-fpm.${pool_name}":
+        ensure => absent,
+      }
+    }
+    'purged': {
+      file {"${log_path}/php${version}-fpm.${pool_name}":
+        ensure       => absent,
+        recurse      => true,
+        recurselimit => 1,
+      }
+    }
+    default : {
+      file {"${log_path}/php${version}-fpm.${pool_name}":
+        ensure => directory,
+        owner  => $user,
+        group  => $group,
+        mode   => '0755'
+      }
+    }
   }
 
   $pool_config = deep_merge($default_pool_config, $custom_pool_config)
