@@ -70,9 +70,8 @@ define php::fpm::pool (
     }
     'purged': {
       file {"${log_path}/php${version}-fpm.${pool_name}":
-        ensure       => absent,
-        recurse      => true,
-        recurselimit => 1,
+        ensure => absent,
+        force  => true,
       }
     }
     default : {
