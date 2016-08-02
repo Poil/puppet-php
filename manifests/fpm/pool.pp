@@ -56,10 +56,17 @@ define php::fpm::pool (
       'pm.process_idle_timeout'       => $pm_process_idle_timeout,
       'pm.max_requests'               => $pm_max_requests,
       'php_flag[display_errors]'      => 'off',
-      'php_admin_value[error_log]'    => "${log_path}/fpm-php.${pool_name}.log",
+      'php_admin_value[error_log]'    => "${log_path}/php${version}-fpm.${pool_name}/error.log",
       'php_admin_flag[log_errors]'    => 'on',
       'php_admin_value[memory_limit]' => '128M',
     }
+  }
+
+  file {"${log_path}/php${version}-fpm.${pool_name}":
+    ensure => directory,
+    owner  => $user,
+    group  => $group,
+    mode   => '0755'
   }
 
   $pool_config = deep_merge($default_pool_config, $custom_pool_config)
