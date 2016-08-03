@@ -7,7 +7,7 @@ define php::mod_php::install::debian (
     'distrib': {
       case $::operatingsystemmajrelease {
         '7', '8': {
-          $package_name = 'libapache2-mod-php'
+          $package_name = 'libapache2-mod-php5'
           $config_dir = '/etc/php5'
           $binary_path = '/usr/bin/php5'
         }
