@@ -1,8 +1,6 @@
 # == Class php::params
 class php::params {
   $repo = 'distrib'
-  $enable_mod_php = false
-  $enable_phpfpm = false
 
   case $::operatingsystem {
     'Debian': {
