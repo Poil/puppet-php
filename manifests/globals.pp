@@ -37,17 +37,21 @@ class php::globals {
     }
   }
 
-  $extra_hardening_config = {
-    'PHP'                      => {
-      'sys_temp_dir'           => $::php::tmp_path,
-      'upload_tmp_dir'         => $::php::tmp_path,
-    },
-    'soap'                  => {
-      'soap.wsdl_cache_dir' => $::php::tmp_path,
+  if $::php::tmp_path {
+    $extra_hardening_config = {
+      'PHP'                      => {
+        'sys_temp_dir'           => $::php::tmp_path,
+        'upload_tmp_dir'         => $::php::tmp_path,
+      },
+      'soap'                  => {
+        'soap.wsdl_cache_dir' => $::php::tmp_path,
+      }
     }
-  }
 
-  $default_hardening_config = deep_merge($base_hardening_config, $extra_hardening_config)
+    $default_hardening_config = deep_merge($base_hardening_config, $extra_hardening_config)
+  } else {
+    $default_hardening_config = $base_hardening_config
+  }
 
   case $::operatingsystem {
     'Debian': {
