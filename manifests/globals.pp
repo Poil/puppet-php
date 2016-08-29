@@ -2,7 +2,7 @@ class php::globals {
   # ------------------------
   # Default Config (globals)
   # ------------------------
-  $default_hardening_config = {
+  $base_hardening_config = {
     'PHP'                      => {
       'short_open_tag'         => 'Off',
       'asp_tags'               => 'Off',
@@ -34,13 +34,21 @@ class php::globals {
       'default_socket_timeout' => '60',
       'date.timezone'          => 'Europe/Paris',
       'disable_functions'      => 'pcntl_alarm,pcntl_fork,pcntl_waitpid,pcntl_wait,pcntl_wifexited,pcntl_wifstopped,pcntl_wifsignaled,pcntl_wexitstatus,pcntl_wtermsig,pcntl_wstopsig,pcntl_signal,pcntl_signal_dispatch,pcntl_get_last_error,pcntl_strerror,pcntl_sigprocmask,pcntl_sigwaitinfo,pcntl_sigtimedwait,pcntl_exec,pcntl_getpriority,pcntl_setpriority,',
-      'sys_temp_dir'           => $::php::tmp_dir,
-      'upload_tmp_dir'         => $::php::tmp_dir,
-    },
-    'soap'                  => {
-      'soap.wsdl_cache_dir' => $::php::tmp_dir,
     }
   }
+
+  $extra_hardening_config = {
+    'PHP'                      => {
+      'sys_temp_dir'           => $::php::tmp_path,
+      'upload_tmp_dir'         => $::php::tmp_path,
+    },
+    'soap'                  => {
+      'soap.wsdl_cache_dir' => $::php::tmp_path,
+    }
+  }
+
+  $default_hardening_config = deep_merge($base_hardening_config, $extra_hardening_config)
+
   case $::operatingsystem {
     'Debian': {
       $fpm_user = 'www-data'
