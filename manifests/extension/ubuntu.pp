@@ -25,9 +25,9 @@ define php::extension::ubuntu (
       case $::operatingsystemmajrelease {
         '16.04': {
           $_package_prefix = pick($package_prefix, 'php7.0-')
-          $ext_tool_enable = 'phpenmod'
-          $ext_tool_disable = 'phpdismod'
-          $ext_tool_query = 'phpquery'
+          $ext_tool_enable = "phpenmod -v ${php_version}"
+          $ext_tool_disable = "phpdismod -v ${php_version}"
+          $ext_tool_query = "phpquery -v ${php_version}"
         }
         '12.04', '14.04': {
           $_package_prefix = pick($package_prefix, 'php5-')
