@@ -24,7 +24,7 @@ define php::extension::ubuntu (
       $binary_path = '/usr/bin/php5'
       case $::operatingsystemmajrelease {
         '16.04': {
-          $_package_prefix = pick($package_prefix, 'php7-')
+          $_package_prefix = pick($package_prefix, 'php7.0-')
           $ext_tool_enable = 'phpenmod'
           $ext_tool_disable = 'phpdismod'
           $ext_tool_query = 'phpquery'
