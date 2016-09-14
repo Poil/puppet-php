@@ -27,7 +27,7 @@ define php::extension::ubuntu (
           $_package_prefix = pick($package_prefix, 'php7.0-')
           $ext_tool_enable = "phpenmod -v ${php_version}"
           $ext_tool_disable = "phpdismod -v ${php_version}"
-          $ext_tool_query = "phpquery -v ${php_version}"
+          $ext_tool_query = "phpquery -V ${php_version}"
         }
         '12.04', '14.04': {
           $_package_prefix = pick($package_prefix, 'php5-')
