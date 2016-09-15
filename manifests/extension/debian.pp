@@ -58,13 +58,16 @@ define php::extension::debian (
 
   # Package that include multiple php module
   if !empty($meta_package) {
-    php::extension::debian { $meta_package:
-      ensure           => $ensure,
-      type             => 'module',
-      php_version      => $php_version,
-      sapi             => $sapi,
-      extension_config => $extension_config,
-      package_prefix   => $package_prefix,
+    $_meta_package = reject($meta_package, $name)
+    if !empty($_meta_package) {
+      php::extension::debian { $meta_package:
+        ensure           => $ensure,
+        type             => 'module',
+        php_version      => $php_version,
+        sapi             => $sapi,
+        extension_config => $extension_config,
+        package_prefix   => $package_prefix,
+      }
     }
   } else {
     case $ensure {
