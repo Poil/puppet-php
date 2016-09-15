@@ -5,6 +5,7 @@ define php::extension (
   $sapi = ['ALL'],
   $extension_config = {},
   $package_prefix = undef,
+  $meta_package = [],
 ) {
 
   case $::operatingsystem {
@@ -15,6 +16,7 @@ define php::extension (
         sapi             => $sapi,
         extension_config => $extension_config,
         package_prefix   => $package_prefix,
+        meta_package     => $meta_package,
       }
     }
     'Debian': {
@@ -24,6 +26,7 @@ define php::extension (
         sapi             => $sapi,
         extension_config => $extension_config,
         package_prefix   => $package_prefix,
+        meta_package     => $meta_package,
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {

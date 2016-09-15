@@ -5,6 +5,7 @@ define php::extension::ubuntu (
   $sapi,
   $extension_config,
   $package_prefix,
+  $meta_package,
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
@@ -58,71 +59,83 @@ define php::extension::ubuntu (
     ensure => $ensure,
   }
 
-  case $ensure {
-    'present', 'installed', 'latest': {
-      $default_extension_config = {
-        'path' => "${config_dir}/mods-available/${name}.ini"
-      }
-      if !empty($extension_config) {
-        create_ini_settings($extension_config, $default_extension_config)
-      }
+  # Package that include multiple php module
+  if !empty($meta_package) {
+    $meta_package_default = {
+      ensure           => $ensure,
+      php_version      => $php_version,
+      sapi             => $sapi,
+      extension_config => $extension_config,
+      package_prefix   => $package_prefix,
+    }
+    create_resources('php::extension::debian', $meta_package, $meta_package_default)
+  } else {
+    case $ensure {
+      'present', 'installed', 'latest': {
+        $default_extension_config = {
+          'path' => "${config_dir}/mods-available/${name}.ini"
+        }
+        if !empty($extension_config) {
+          create_ini_settings($extension_config, $default_extension_config)
+        }
 
-      case $is_mod_php {
-        'present', 'installed': {
-          if !empty($enabling_sapi) {
-            $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
-            ::php::extension::sapi { $p_enabling_sapi:
-              ensure           => present,
-              module           => $name,
-              ext_tool_query   => $ext_tool_query,
-              ext_tool_enable  => $ext_tool_enable,
-              ext_tool_disable => $ext_tool_disable,
-              notify           => Service[$::php::apache_service_name],
+        case $is_mod_php {
+          'present', 'installed': {
+            if !empty($enabling_sapi) {
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
+              ::php::extension::sapi { $p_enabling_sapi:
+                ensure           => present,
+                module           => $name,
+                ext_tool_query   => $ext_tool_query,
+                ext_tool_enable  => $ext_tool_enable,
+                ext_tool_disable => $ext_tool_disable,
+                notify           => Service[$::php::apache_service_name],
+              }
+            }
+            if !empty($disabling_sapi) {
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
+              ::php::extension::sapi { $p_disabling_sapi:
+                ensure           => absent,
+                module           => $name,
+                ext_tool_query   => $ext_tool_query,
+                ext_tool_enable  => $ext_tool_enable,
+                ext_tool_disable => $ext_tool_disable,
+                notify           => Service[$::php::apache_service_name],
+              }
             }
           }
-          if !empty($disabling_sapi) {
-            $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
-            ::php::extension::sapi { $p_disabling_sapi:
-              ensure           => absent,
-              module           => $name,
-              ext_tool_query   => $ext_tool_query,
-              ext_tool_enable  => $ext_tool_enable,
-              ext_tool_disable => $ext_tool_disable,
-              notify           => Service[$::php::apache_service_name],
+          default : {
+            if !empty($enabling_sapi) {
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
+              ::php::extension::sapi { $p_enabling_sapi:
+                ensure           => present,
+                module           => $name,
+                ext_tool_query   => $ext_tool_query,
+                ext_tool_enable  => $ext_tool_enable,
+                ext_tool_disable => $ext_tool_disable,
+              }
             }
-          }
-        }
-        default : {
-          if !empty($enabling_sapi) {
-            $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
-            ::php::extension::sapi { $p_enabling_sapi:
-              ensure           => present,
-              module           => $name,
-              ext_tool_query   => $ext_tool_query,
-              ext_tool_enable  => $ext_tool_enable,
-              ext_tool_disable => $ext_tool_disable,
-            }
-          }
-          if !empty($disabling_sapi) {
-            $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
-            ::php::extension::sapi { $p_disabling_sapi:
-              ensure           => absent,
-              module           => $name,
-              ext_tool_query   => $ext_tool_query,
-              ext_tool_enable  => $ext_tool_enable,
-              ext_tool_disable => $ext_tool_disable,
+            if !empty($disabling_sapi) {
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
+              ::php::extension::sapi { $p_disabling_sapi:
+                ensure           => absent,
+                module           => $name,
+                ext_tool_query   => $ext_tool_query,
+                ext_tool_enable  => $ext_tool_enable,
+                ext_tool_disable => $ext_tool_disable,
+              }
             }
           }
         }
       }
-    }
-    'absent', 'purged': {
-      file { "${config_dir}/mods-available/${name}.ini":
-        ensure => absent
+      'absent', 'purged': {
+        file { "${config_dir}/mods-available/${name}.ini":
+          ensure => absent
+        }
       }
-    }
-    default: {
-      fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+      default: {
+        fail("Error - ${module_name}, unknown ensure value '${ensure}'")
+      }
     }
   }
 }
