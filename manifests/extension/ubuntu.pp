@@ -73,6 +73,7 @@ define php::extension::ubuntu (
         sapi             => $sapi,
         extension_config => $extension_config,
         package_prefix   => $package_prefix,
+        meta_package     => [],
       }
     }
   } else {
