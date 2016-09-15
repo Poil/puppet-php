@@ -72,10 +72,7 @@ define php::extension::ubuntu (
       extension_config => $extension_config,
       package_prefix   => $package_prefix,
     }
-  }
-
-  # no meta_package or package have the same name as a meta_package
-  if (empty($meta_package) or count(intersection($meta_package, [$name])) >= 1) {
+  } else {
     case $ensure {
       'present', 'installed', 'latest': {
         $default_extension_config = {
