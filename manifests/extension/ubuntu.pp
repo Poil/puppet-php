@@ -61,14 +61,13 @@ define php::extension::ubuntu (
 
   # Package that include multiple php module
   if !empty($meta_package) {
-    $meta_package_default = {
+    php::extension::ubuntu { $meta_package:
       ensure           => $ensure,
       php_version      => $php_version,
       sapi             => $sapi,
       extension_config => $extension_config,
       package_prefix   => $package_prefix,
     }
-    create_resources('php::extension::debian', $meta_package, $meta_package_default)
   } else {
     case $ensure {
       'present', 'installed', 'latest': {
