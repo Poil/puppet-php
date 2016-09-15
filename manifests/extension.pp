@@ -12,6 +12,7 @@ define php::extension (
     'Ubuntu': {
       ::php::extension::ubuntu { $name:
         ensure           => $ensure,
+        type             => 'package',
         php_version      => $php_version,
         sapi             => $sapi,
         extension_config => $extension_config,
@@ -22,6 +23,7 @@ define php::extension (
     'Debian': {
       ::php::extension::debian { $name:
         ensure           => $ensure,
+        type             => 'package',
         php_version      => $php_version,
         sapi             => $sapi,
         extension_config => $extension_config,

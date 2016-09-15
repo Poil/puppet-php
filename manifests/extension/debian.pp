@@ -1,6 +1,7 @@
 # == define php::extension::debian
 define php::extension::debian (
   $ensure,
+  $type,
   $php_version,
   $sapi,
   $extension_config,
@@ -49,14 +50,17 @@ define php::extension::debian (
   }
   $extension_name = "${_package_prefix}${name}"
 
-  package { $extension_name:
-    ensure => $ensure,
+  if ($type == 'package') {
+    package { $extension_name:
+      ensure => $ensure,
+    }
   }
 
   # Package that include multiple php module
   if !empty($meta_package) {
     php::extension::debian { $meta_package:
       ensure           => $ensure,
+      type             => 'module',
       php_version      => $php_version,
       sapi             => $sapi,
       extension_config => $extension_config,
