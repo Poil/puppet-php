@@ -18,6 +18,11 @@ class php (
     $versions_str = join($versions_keys, ', ')
   }
 
+  if $repo == 'distrib' {
+    if count(intersection($versions_keys, $::php::params::versions)) != count($versions_keys) {
+      fail("Error - ${module_name} : Versions ${versions_str} are not supported by distrib repository")
+    }
+  }
   case $::operatingsystem {
     'Debian': {
       if count(keys($versions)) > 1 and ($repo == 'distrib' or $repo == 'dotdeb') {

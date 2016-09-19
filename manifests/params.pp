@@ -8,10 +8,10 @@ class php::params {
       $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '7': {
-          $version = ['5.4']
+          $versions = ['5.4']
         }
         '8': {
-          $version = ['5.6']
+          $versions = ['5.6']
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
@@ -23,13 +23,13 @@ class php::params {
       $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '12.04': {
-          $version = ['5.3']
+          $versions = ['5.3']
         }
         '14.04': {
-          $version = ['5.5']
+          $versions = ['5.5']
         }
         '16.04': {
-          $version = ['7.0']
+          $versions = ['7.0']
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
@@ -41,10 +41,10 @@ class php::params {
       $nginx_service_name = 'nginx'
       case $::operatingsystemmajrelease {
         '6': {
-          $version = ['5.3']
+          $versions = ['5.3']
         }
         '7': {
-          $version = ['5.4']
+          $versions = ['5.4']
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
