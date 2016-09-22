@@ -1,6 +1,6 @@
 # == Class PHP
 class php (
-  $versions            = $::php::params::version,
+  $versions            = $::php::params::versions,
   $repo                = $::php::params::repo,
   $centos_mirror_url   = 'http://ftp.ciril.fr/pub/linux',
   $log_path            = '/var/log',
@@ -25,7 +25,7 @@ class php (
   }
   case $::operatingsystem {
     'Debian': {
-      if count(keys($versions)) > 1 and ($repo == 'distrib' or $repo == 'dotdeb') {
+      if count($versions_keys) > 1 and ($repo == 'distrib' or $repo == 'dotdeb') {
         fail("error - ${module_name} : ${::operatingsystem} doesn't support multiple php version")
       }
       if $repo == 'sury' {
@@ -45,7 +45,7 @@ class php (
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {
-      if count(keys($versions)) > 1 and $repo == 'distrib'  {
+      if count($versions_keys) > 1 and $repo == 'distrib'  {
         fail("Error - ${module_name} : On ${::operatingsystem} you must set repo to scl to support multiple php version")
       }
       if $repo == 'scl' {
