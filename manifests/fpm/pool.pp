@@ -55,6 +55,7 @@ define php::fpm::pool (
       'pm.max_spare_servers'          => $pm_max_spare_servers,
       'pm.process_idle_timeout'       => $pm_process_idle_timeout,
       'pm.max_requests'               => $pm_max_requests,
+      'pm.status_path'                => "/pl-${pool_name}-status",
       'php_flag[display_errors]'      => 'off',
       'php_admin_value[error_log]'    => "${log_path}/php${version}-fpm.${pool_name}/error.log",
       'php_admin_flag[log_errors]'    => 'on',
