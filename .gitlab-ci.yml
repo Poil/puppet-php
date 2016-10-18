@@ -1,7 +1,31 @@
-puppet_modules:
-    script:
-        - /home/gitlab-runner/scripts/puppet-validate.sh
-        - /home/gitlab-runner/scripts/puppet-lint.sh
-        - /home/gitlab-runner/scripts/erb-syntax.sh
-    tags:
-        - puppet_modules
+stages:
+  - sonarqube
+  - production
+  - future
+
+code_quality:
+  stage: sonarqube
+  script:
+    - /home/gitlab-runner/scripts/sonarqube.sh
+  tags:
+    - puppet_modules
+
+puppet_3:
+  stage: production
+  image: claranet/puppet3base:latest
+  script:
+    - /home/gitlab-runner/scripts/puppet-validate_alone.sh
+    - /home/gitlab-runner/scripts/puppet-lint.sh
+    - /home/gitlab-runner/scripts/erb-syntax.sh 
+  tags:
+    - puppet3
+
+puppet_pc1:
+  stage: future
+  image: claranet/puppetpc1base:latest
+  script:
+    - /home/gitlab-runner/scripts/puppet-validate_alone.sh
+    - /home/gitlab-runner/scripts/puppet-lint_future.sh
+    - /home/gitlab-runner/scripts/erb-syntax.sh
+  tags:
+    - puppetpc1
