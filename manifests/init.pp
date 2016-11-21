@@ -8,6 +8,7 @@ class php (
   $session_save_path   = undef,
   $apache_service_name = $::php::params::apache_service_name,
   $nginx_service_name  = $::php::params::nginx_service_name,
+  $fpm_socket_dir      = $::php::params::fpm_socket_dir,
 ) inherits php::params {
 
   # ------------------------

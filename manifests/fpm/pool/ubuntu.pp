@@ -6,7 +6,7 @@ define php::fpm::pool::ubuntu(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $_listen = pick($listen, "/run/php/php${version}-fpm.${pool_name}.sock")
+  $_listen = pick($listen, "${::php::fpm_socket_dir}/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {
