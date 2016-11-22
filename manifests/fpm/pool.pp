@@ -34,8 +34,18 @@ define php::fpm::pool (
   }
 
   # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
-  $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo]
-  $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+  if $::php::repo == 'scl' {
+    if has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo], $version) {
+      $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo][$version]
+      $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+    } else {
+      $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo]
+      $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+    }
+  } else {
+    $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo]
+    $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+  }
 
   # -----------------------------
   # Validate
