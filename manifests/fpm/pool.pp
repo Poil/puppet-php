@@ -113,7 +113,7 @@ define php::fpm::pool (
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,
-        listen    => $listen,
+        listen    => $_listen,
       }
     }
     'Debian': {
@@ -122,7 +122,7 @@ define php::fpm::pool (
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,
-        listen    => $listen,
+        listen    => $_listen,
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {
@@ -131,7 +131,7 @@ define php::fpm::pool (
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,
-        listen    => $listen,
+        listen    => $_listen,
       }
     }
     default : {
