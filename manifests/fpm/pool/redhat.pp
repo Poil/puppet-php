@@ -6,7 +6,6 @@ define php::fpm::pool::redhat(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $_listen = pick($listen, "/run/php/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {
@@ -45,8 +44,8 @@ define php::fpm::pool::redhat(
   }
 
   $default_config = {
-    "${pool_name}"  => {
-      'listen' => $_listen,
+    "${pool_name}"  => { # lint:ignore:only_variable_string
+      'listen' => $listen,
     }
   }
 

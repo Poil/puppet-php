@@ -6,7 +6,6 @@ define php::fpm::pool::ubuntu(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $_listen = pick($listen, "/run/php/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {
@@ -35,8 +34,8 @@ define php::fpm::pool::ubuntu(
   }
 
   $default_config = {
-    "${pool_name}"  => {
-      'listen' => $_listen,
+    "${pool_name}" => { # lint:ignore:only_variable_string
+      'listen' => $listen,
     }
   }
 

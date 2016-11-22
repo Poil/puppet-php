@@ -1,6 +1,43 @@
 # == Class php::params
 class php::params {
   $repo = 'distrib'
+  $fpm_socket_dir = {
+    'Debian' => {
+      '7'    => { 'distrib' => '/run' },
+      '8'    => {
+        'distrib' => '/run' ,
+        'sury'    => '/run/php',
+      },
+    },
+    'Ubuntu'      => {
+      '12.04'     => {
+        'distrib' => '/var/run',
+        'ondrej'  => '/run/php'
+      },
+      '14.04'     => {
+        'distrib' => '/var/run',
+        'ondrej'  => '/run/php'
+      },
+      '16.04'     => {
+        'distrib' => '/run/php',
+        'ondrej'  => '/run/php'
+      },
+    },
+    'RedHat'      => {
+      '5'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+      '6'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+      '7'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+    },
+  }
 
   case $::operatingsystem {
     'Debian': {
