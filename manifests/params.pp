@@ -25,16 +25,21 @@ class php::params {
     },
     'RedHat'      => {
       '5'         => {
-        'distrib' => '/run/php-fpm',
-        'scl'     => '/run/php-fpm',
+        'distrib' => '/run/php-fpm'
       },
       '6'         => {
         'distrib' => '/run/php-fpm',
-        'scl'     => '/run/php-fpm',
+        'scl'     =>  {
+          '5.5'   => '/run/php-fpm',
+          '5.6'   => '/var/opt/rh/rh-php56/run/php-fpm',
+        },
       },
       '7'         => {
         'distrib' => '/run/php-fpm',
-        'scl'     => '/run/php-fpm',
+        'scl'     => {
+          '5.5'   => '/run/php-fpm',
+          '5.6'   => '/var/opt/rh/rh-php56/run/php-fpm',
+        },
       },
     },
   }
