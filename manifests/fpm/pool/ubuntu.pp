@@ -6,7 +6,24 @@ define php::fpm::pool::ubuntu(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $_listen = pick($listen, "${::php::fpm_socket_dir}/php${version}-fpm.${pool_name}.sock")
+  $os = $::osfamily ? {
+    'Debian' => $::operatingsystem,
+    'RedHat' => $::osfamily,
+    default  => $::osfamily,
+  }
+
+  if !has_key($::php::fpm_socket_dir, $os) {
+    fail("Error - ${module_name} : Can't find os '${os}' in ::php::fpm_socket_dir")
+  } elsif !has_key($::php::fpm_socket_dir[$os], $version) {
+    fail("Error - ${module_name} : Can't find version '${version}' in ::php::fpm_socket_dir[${os}]")
+  } elsif !has_key($::php::fpm_socket_dir[$os][$version], $::php::repo) {
+    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${os}][${version}]")
+  }
+
+  # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
+  $default_socket_dir = $::php::fpm_socket_dir[$os][$version][$::php::repo]
+
+  $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {

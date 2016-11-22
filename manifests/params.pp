@@ -1,6 +1,43 @@
 # == Class php::params
 class php::params {
   $repo = 'distrib'
+  $fpm_socket_dir = {
+    'Debian' => {
+      '7'    => { 'distrib' => '/run' },
+      '8'    => {
+        'distrib' => '/run' ,
+        'sury'    => '/run/php',
+      },
+    },
+    'Ubuntu'      => {
+      '12.04'     => {
+        'distrib' => '/var/run',
+        'ondrej'  => '/run/php'
+      },
+      '14.04'     => {
+        'distrib' => '/var/run',
+        'ondrej'  => '/run/php'
+      },
+      '16.04'     => {
+        'distrib' => '/run/php',
+        'ondrej'  => '/run/php'
+      },
+    },
+    'RedHat'      => {
+      '5'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+      '6'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+      '7'         => {
+        'distrib' => '/run/php-fpm',
+        'scl'     => '/run/php-fpm',
+      },
+    },
+  }
 
   case $::operatingsystem {
     'Debian': {
@@ -9,11 +46,9 @@ class php::params {
       case $::operatingsystemmajrelease {
         '7': {
           $versions = ['5.4']
-          $fpm_socket_dir = '/run'
         }
         '8': {
           $versions = ['5.6']
-          $fpm_socket_dir = '/run/php'
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
@@ -26,15 +61,12 @@ class php::params {
       case $::operatingsystemmajrelease {
         '12.04': {
           $versions = ['5.3']
-          $fpm_socket_dir = '/var/run'
         }
         '14.04': {
           $versions = ['5.5']
-          $fpm_socket_dir = '/var/run'
         }
         '16.04': {
           $versions = ['7.0']
-          $fpm_socket_dir = '/run/php'
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
@@ -47,11 +79,9 @@ class php::params {
       case $::operatingsystemmajrelease {
         '6': {
           $versions = ['5.3']
-          $fpm_socket_dir = '/var/run/php-fpm'
         }
         '7': {
           $versions = ['5.4']
-          $fpm_socket_dir = '/var/run/php-fpm'
         }
         default: {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
