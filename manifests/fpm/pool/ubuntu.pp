@@ -6,23 +6,17 @@ define php::fpm::pool::ubuntu(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $os = $::osfamily ? {
-    'Debian' => $::operatingsystem,
-    'RedHat' => $::osfamily,
-    default  => $::osfamily,
-  }
 
-  if !has_key($::php::fpm_socket_dir, $os) {
-    fail("Error - ${module_name} : Can't find os '${os}' in ::php::fpm_socket_dir")
-  } elsif !has_key($::php::fpm_socket_dir[$os], $::operatingsystemmajrelease) {
+  if !has_key($::php::fpm_socket_dir, $::operatingsystem) {
+    fail("Error - ${module_name} : Can't find os '${::operatingsystem}' in ::php::fpm_socket_dir")
+  } elsif !has_key($::php::fpm_socket_dir[$::operatingsystem], $::operatingsystemmajrelease) {
     fail("Error - ${module_name} : Can't find osmajrelease '${::operatingsystemmajrelease}' in ::php::fpm_socket_dir[${os}]")
-  } elsif !has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease], $::php::repo) {
-    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${os}][${::operatingsystemmajrelease}]")
+  } elsif !has_key($::php::fpm_socket_dir[$::operatingsystem][$::operatingsystemmajrelease], $::php::repo) {
+    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${::operatingsystem}][${::operatingsystemmajrelease}]")
   }
 
   # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
-  $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo]
-
+  $default_socket_dir = $::php::fpm_socket_dir[$::operatingsystem][$::operatingsystemmajrelease][$::php::repo]
   $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
@@ -52,7 +46,7 @@ define php::fpm::pool::ubuntu(
   }
 
   $default_config = {
-    "${pool_name}"  => {
+    $pool_name => {
       'listen' => $_listen,
     }
   }

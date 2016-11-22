@@ -6,7 +6,17 @@ define php::fpm::pool::redhat(
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  $_listen = pick($listen, "${::php::fpm_socket_dir}/php${version}-fpm.${pool_name}.sock")
+  if !has_key($::php::fpm_socket_dir, $::osfamily) {
+    fail("Error - ${module_name} : Can't find os '${::osfamily}' in ::php::fpm_socket_dir")
+  } elsif !has_key($::php::fpm_socket_dir[$::osfamily], $::operatingsystemmajrelease) {
+    fail("Error - ${module_name} : Can't find osmajrelease '${::operatingsystemmajrelease}' in ::php::fpm_socket_dir[${::osfamily}]")
+  } elsif !has_key($::php::fpm_socket_dir[$::osfamily][$::operatingsystemmajrelease], $::php::repo) {
+    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${::osfamily}][${::operatingsystemmajrelease}]")
+  }
+
+  # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
+  $default_socket_dir = $::php::fpm_socket_dir[$::osfamily][$::operatingsystemmajrelease][$::php::repo]
+  $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
 
   case $::php::repo {
     'distrib': {
