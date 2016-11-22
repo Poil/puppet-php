@@ -7,18 +7,6 @@ define php::fpm::pool::ubuntu(
   $pool_name = $name,
 ) {
 
-  if !has_key($::php::fpm_socket_dir, $::operatingsystem) {
-    fail("Error - ${module_name} : Can't find os '${::operatingsystem}' in ::php::fpm_socket_dir")
-  } elsif !has_key($::php::fpm_socket_dir[$::operatingsystem], $::operatingsystemmajrelease) {
-    fail("Error - ${module_name} : Can't find osmajrelease '${::operatingsystemmajrelease}' in ::php::fpm_socket_dir[${os}]")
-  } elsif !has_key($::php::fpm_socket_dir[$::operatingsystem][$::operatingsystemmajrelease], $::php::repo) {
-    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${::operatingsystem}][${::operatingsystemmajrelease}]")
-  }
-
-  # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
-  $default_socket_dir = $::php::fpm_socket_dir[$::operatingsystem][$::operatingsystemmajrelease][$::php::repo]
-  $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
-
   case $::php::repo {
     'distrib': {
       case $::operatingsystemmajrelease {
@@ -46,8 +34,8 @@ define php::fpm::pool::ubuntu(
   }
 
   $default_config = {
-    $pool_name => {
-      'listen' => $_listen,
+    "${pool_name}" => { # lint:ignore:only_variable_string
+      'listen' => $listen,
     }
   }
 
