@@ -2,43 +2,45 @@
 class php::params {
   $repo = 'distrib'
   $fpm_socket_dir = {
-    'Debian' => {
-      '7'    => { 'distrib' => '/run' },
-      '8'    => {
-        'distrib' => '/run' ,
-        'sury'    => '/run/php',
+    'Debian'      => {
+      '7'         => {
+        'distrib' =>  { 'default' => '/run', },
+      },
+      '8'         => {
+        'distrib' => { 'default' => '/run', },
+        'sury'    => { 'default' =>  '/run/php', },
       },
     },
     'Ubuntu'      => {
       '12.04'     => {
-        'distrib' => '/var/run',
-        'ondrej'  => '/run/php'
+        'distrib' => { 'default' => '/var/run', },
+        'ondrej'  => { 'default' => '/run/php', },
       },
       '14.04'     => {
-        'distrib' => '/var/run',
-        'ondrej'  => '/run/php'
+        'distrib' => { 'default' => '/var/run', },
+        'ondrej'  => { 'default' => '/run/php', },
       },
       '16.04'     => {
-        'distrib' => '/run/php',
-        'ondrej'  => '/run/php'
+        'distrib' => { 'default' => '/run/php', },
+        'ondrej'  => { 'default' => '/run/php', },
       },
     },
     'RedHat'      => {
       '5'         => {
-        'distrib' => '/run/php-fpm'
+        'distrib' => { 'default' => '/run/php-fpm', },
       },
       '6'         => {
-        'distrib' => '/run/php-fpm',
-        'scl'     =>  {
-          '5.5'   => '/run/php-fpm',
-          '5.6'   => '/var/opt/rh/rh-php56/run/php-fpm',
+        'distrib' => { 'default' =>  '/run/php-fpm', },
+        'scl'     => {
+          'default'  => '/run/php-fpm',
+          '5.6'      => '/var/opt/rh/rh-php56/run/php-fpm',
         },
       },
       '7'         => {
         'distrib' => '/run/php-fpm',
         'scl'     => {
-          '5.5'   => '/run/php-fpm',
-          '5.6'   => '/var/opt/rh/rh-php56/run/php-fpm',
+          'default' => '/run/php-fpm',
+          '5.6'     => '/var/opt/rh/rh-php56/run/php-fpm',
         },
       },
     },
