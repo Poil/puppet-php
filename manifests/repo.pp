@@ -55,7 +55,6 @@ class php::repo (
         'distrib': {
         }
         'scl': {
-          class { '::php::repo::centos': ensure => absent }
         }
         default : {
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
