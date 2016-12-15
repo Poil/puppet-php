@@ -8,6 +8,7 @@ define php::extension::redhat (
   $meta_package,
 ) {
   $is_mod_php = getparam(Php::Mod_php::Install[$php_version], 'ensure')
+  $stripped_version = regsubst(sprintf('%s', $php_version), '\.', '')
 
   case $::php::repo {
     'distrib': {
@@ -27,7 +28,7 @@ define php::extension::redhat (
         '5.6': {
           $config_dir = '/etc/opt/rh/rh-php56/php.d'
           $binary_path = '/opt/rh/rh-php56/root/usr/bin/php'
-          $_package_prefix = pick($package_prefix, "rh-php${php_version}-")
+          $_package_prefix = pick($package_prefix, "rh-php${stripped_version}-")
         }
         default: {
         }
