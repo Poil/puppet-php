@@ -36,7 +36,6 @@ define php::extension (
         ensure           => $ensure,
         type             => 'package',
         php_version      => $php_version,
-        sapi             => $sapi,
         extension_config => $extension_config,
         package_prefix   => $package_prefix,
         meta_package     => $meta_package,
