@@ -28,7 +28,7 @@ define php::extension::redhat (
         '5.6': {
           $config_dir = '/etc/opt/rh/rh-php56/php.d'
           $binary_path = '/opt/rh/rh-php56/root/usr/bin/php'
-          $_package_prefix = pick($package_prefix, "rh-php${stripped_version}-")
+          $_package_prefix = pick($package_prefix, "rh-php${stripped_version}-php-")
         }
         default: {
         }
