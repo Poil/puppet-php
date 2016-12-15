@@ -32,6 +32,15 @@ define php::extension (
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {
+      ::php::extension::redhat{ $name:
+        ensure           => $ensure,
+        type             => 'package',
+        php_version      => $php_version,
+        sapi             => $sapi,
+        extension_config => $extension_config,
+        package_prefix   => $package_prefix,
+        meta_package     => $meta_package,
+      }
     }
     default: {
       fail("Error - ${module_name}, unsupported OS ${::operatingsytem}")
