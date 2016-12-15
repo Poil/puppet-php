@@ -7,7 +7,7 @@ class php::repo::redhat (
     source => "puppet:///modules/${module_name}/gpg/RPM-GPG-KEY-CentOS-SIG-SCLo",
     owner  => 'root',
     group  => 'root',
-    mode   => '0755',
+    mode   => '0644',
   }
 
   case $::operatingsystem {
