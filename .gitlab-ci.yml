@@ -12,7 +12,6 @@ code_quality:
 
 puppet_3:
   stage: production
-  image: claranet/puppet3base:latest
   script:
     - /home/gitlab-runner/scripts/puppet-validate_alone.sh
     - /home/gitlab-runner/scripts/puppet-lint.sh
@@ -22,7 +21,6 @@ puppet_3:
 
 puppet_pc1:
   stage: future
-  image: claranet/puppetpc1base:latest
   script:
     - /home/gitlab-runner/scripts/puppet-validate_alone.sh
     - /home/gitlab-runner/scripts/puppet-lint_future.sh
