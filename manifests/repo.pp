@@ -38,24 +38,12 @@ class php::repo (
         }
       }
     }
-    'CentOS', 'OracleLinux': {
+    'CentOS', 'OracleLinux', 'RedHat': {
       case $repo {
         'distrib': {
         }
         'scl': {
-          class { '::php::repo::centos': ensure => present }
-        }
-        default : {
-          fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
-        }
-      }
-    }
-    'RedHat': {
-      case $repo {
-        'distrib': {
-        }
-        'scl': {
-          class { '::php::repo::centos': ensure => absent }
+          class { '::php::repo::redhat': ensure => present }
         }
         default : {
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
