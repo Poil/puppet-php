@@ -29,6 +29,9 @@ define php::fpm::pool::redhat(
         '5.6': {
           $config_dir = '/etc/opt/rh/rh-php56'
         }
+        '7.0': {
+          $config_dir = '/etc/opt/rh/rh-php70'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${version} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }

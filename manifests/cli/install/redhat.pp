@@ -32,6 +32,11 @@ define php::cli::install::redhat (
           $config_dir = '/etc/opt/rh/rh-php56'
           $binary_path = '/opt/rh/rh-php56/root/bin/php'
         }
+        '7.0': {
+          $package_name = 'rh-php70-php-cli'
+          $config_dir = '/etc/opt/rh/rh-php70'
+          $binary_path = '/opt/rh/rh-php70/root/bin/php'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
