@@ -3,9 +3,6 @@ class php::repo::debian ($ensure = 'distrib') {
     'distrib': {
       class { '::php::repo::debian::sury': ensure => absent }
     }
-    'dotdeb': {
-      class { '::php::repo::debian::sury': ensure => absent }
-    }
     'sury': {
       class { '::php::repo::debian::sury': ensure => present }
     }

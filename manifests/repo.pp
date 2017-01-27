@@ -23,11 +23,6 @@ class php::repo (
             ensure => 'distrib'
           }
         }
-        'dotdeb': {
-          class { '::php::repo::debian':
-            ensure => 'dotdeb'
-          }
-        }
         'sury': {
           class { '::php::repo::debian':
             ensure => 'sury'
@@ -49,6 +44,8 @@ class php::repo (
           fail("error - ${module_name} : unknown repository ${repo} for ${::operatingsystem}")
         }
       }
+    }
+    default: {
     }
   }
 }

@@ -26,7 +26,7 @@ class php (
   }
   case $::operatingsystem {
     'Debian': {
-      if count($versions_keys) > 1 and ($repo == 'distrib' or $repo == 'dotdeb') {
+      if count($versions_keys) > 1 and ($repo == 'distrib') {
         fail("error - ${module_name} : ${::operatingsystem} doesn't support multiple php version")
       }
       if $repo == 'sury' {
