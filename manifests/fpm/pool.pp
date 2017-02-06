@@ -52,8 +52,8 @@ define php::fpm::pool (
     }
     'ondemand': { }
     'static': {
-      if empty($pm_start_servers) {
-        fail("Error - ${module_name}, start_servers must be set when pm = static")
+      if empty($pm_max_children) {
+        fail("Error - ${module_name}, pm_max_children must be set when pm = static")
       }
     }
     default: {
@@ -144,5 +144,3 @@ define php::fpm::pool (
     }
   }
 }
-
-
