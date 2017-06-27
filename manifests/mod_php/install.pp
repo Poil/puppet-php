@@ -1,3 +1,4 @@
+# == define php::mod_php::install
 define php::mod_php::install (
   $ensure = 'present',
   $custom_config = {},
@@ -11,8 +12,8 @@ define php::mod_php::install (
     }
     'Debian': {
       ::php::mod_php::install::debian { $name :
-        ensure         => $ensure,
-        custom_config  => $custom_config,
+        ensure        => $ensure,
+        custom_config => $custom_config,
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
@@ -22,5 +23,3 @@ define php::mod_php::install (
     }
   }
 }
-
-

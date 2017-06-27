@@ -1,3 +1,4 @@
+# == define php::fpm::service::redhat
 define php::fpm::service::redhat (
   $ensure,
   $enable,

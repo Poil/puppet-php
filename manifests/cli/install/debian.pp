@@ -1,3 +1,4 @@
+# == define php::cli::install::debian
 define php::cli::install::debian (
   $ensure,
   $custom_config,

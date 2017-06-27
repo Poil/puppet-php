@@ -11,8 +11,8 @@ define php::cli::install (
   case $::operatingsystem {
     'Ubuntu': {
       ::php::cli::install::ubuntu { $name :
-        ensure         => $ensure,
-        custom_config  => $custom_cli_config,
+        ensure        => $ensure,
+        custom_config => $custom_cli_config,
       }
     }
     'Debian': {

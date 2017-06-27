@@ -1,3 +1,4 @@
+# == define php::cli::install::redhat
 define php::cli::install::redhat (
   $ensure,
   $custom_config,

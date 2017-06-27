@@ -51,7 +51,7 @@ define php::install (
           ensure    => absent,
           version   => $name,
           pool_name => 'www',
-          require => [::Php::Fpm::Install[$name], Class['::php::folders']],
+          require   => [::Php::Fpm::Install[$name], Class['::php::folders']],
           notify    => ::Php::Fpm::Service[$name],
         }
       }

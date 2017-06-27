@@ -1,3 +1,4 @@
+# == class php::folders
 class php::folders {
   if !defined(File[$::php::tmp_path]) and $::php::tmp_path != '/tmp' {
     file { $::php::tmp_path:

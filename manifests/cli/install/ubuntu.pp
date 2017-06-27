@@ -1,3 +1,4 @@
+# == define php::cli::install::ubuntu
 define php::cli::install::ubuntu (
   $ensure,
   $custom_config,

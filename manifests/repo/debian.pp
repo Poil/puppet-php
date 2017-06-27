@@ -1,3 +1,4 @@
+# == class php::repo::debian
 class php::repo::debian ($ensure = 'distrib') {
   case $ensure {
     'distrib': {

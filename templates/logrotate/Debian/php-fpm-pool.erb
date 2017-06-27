@@ -1,0 +1,16 @@
+<% @fpm_pools.each do |pool_name,value| %>/var/log/php<%= @name %>-fpm.<%= pool_name %>/*.log
+<% end %>{
+  rotate 12
+  weekly
+  missingok
+  notifempty
+  compress
+  delaycompress
+  postrotate
+<%- if @name.to_i == 5 -%>
+    /usr/lib/php5/php5-fpm-reopenlogs
+<%- else -%>
+    /usr/lib/php/php<%= @name %>-fpm-reopenlogs
+<%- end -%>
+  endscript
+}

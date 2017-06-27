@@ -1,3 +1,4 @@
+# == define php::fpm::service::debian
 define php::fpm::service::debian (
   $ensure,
   $enable,
