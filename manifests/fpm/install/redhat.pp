@@ -1,3 +1,4 @@
+# define php::fpm::install::redhat
 define php::fpm::install::redhat (
   $ensure,
   $custom_config,
@@ -69,11 +70,11 @@ define php::fpm::install::redhat (
         require        => Package[$package_name],
       }
     }
-    'absent', 'purged': {
-      file { "${config_dir}/php.ini":
-        ensure => absent
-      }
-    }
+    #'absent', 'purged': {
+    #  file { "${config_dir}/php.ini":
+    #    ensure => absent
+    #  }
+    #}
     default: {
       fail("Error - ${module_name}, unknown ensure value '${ensure}'")
     }
