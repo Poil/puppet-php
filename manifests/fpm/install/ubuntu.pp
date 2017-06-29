@@ -28,6 +28,7 @@ define php::fpm::install::ubuntu (
       $package_name = "php${name}-fpm"
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
+      $logrotate_name = "php${name}-fpm"
     }
     default: {
       fail("error - ${module_name} unknown repository ${repo}")
