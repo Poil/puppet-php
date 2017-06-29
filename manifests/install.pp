@@ -20,7 +20,7 @@ define php::install (
   # --------------------
   # Repo
   # --------------------
-  case $::repo {
+  case $repo {
     'distrib': {
     }
     default: {
