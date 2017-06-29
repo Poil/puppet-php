@@ -24,7 +24,14 @@ define php::install (
     'distrib': {
     }
     default: {
-      $osfamily_min = downcase($::osfamily)
+      case $::osfamily {
+        'Debian': {
+          $osfamily_min = downcase($::operatingsystem)
+        }
+        default: {
+          $osfamily_min = downcase($::osfamily)
+        }
+      }
       include "::php::repo::${osfamily_min}::${repo}"
     }
   }
