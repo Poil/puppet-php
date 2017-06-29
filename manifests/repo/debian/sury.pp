@@ -15,6 +15,7 @@ class php::repo::debian::sury (
   $versions_keys = keys($::php::versions)
 
   include '::apt'
+  ensure_packages(['apt-transport-https'])
 
   ::apt::source { 'php-sury':
     ensure   => $ensure,
