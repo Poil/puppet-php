@@ -74,6 +74,6 @@ class php (
   class { '::php::globals': }
   -> class { '::php::folders': }
 
-  create_resources('::php::install', $versions, { 'require' => Class['::php::folders'], })
+  create_resources('::php::install', $versions, { 'require' => Class['::php::globals'], })
 }
 
