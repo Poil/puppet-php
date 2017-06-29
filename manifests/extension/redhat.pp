@@ -1,6 +1,7 @@
 # == define php::extension::redhat
 define php::extension::redhat (
   $ensure,
+  $repo,
   $type,
   $php_version,
   $extension_config,
@@ -10,7 +11,7 @@ define php::extension::redhat (
   $is_mod_php = getparam(Php::Mod_php::Install[$php_version], 'ensure')
   $stripped_version = regsubst(sprintf('%s', $php_version), '\.', '')
 
-  case $::php::repo {
+  case $repo {
     'distrib': {
       $config_dir = '/etc/php.d'
       $binary_path = '/bin/php'
@@ -40,7 +41,7 @@ define php::extension::redhat (
       }
     }
     default: {
-      fail("Error - ${module_name}, Unknown repository ${::php::repo}")
+      fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
   $extension_name = "${_package_prefix}${name}"

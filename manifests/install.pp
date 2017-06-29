@@ -18,6 +18,11 @@ define php::install (
   validate_re($ensure_fpm, '^(present)|(installed)|(latest)|(absent)|(purged)$', "ensure_fpm, is '${ensure_cli}' and must be absent, purged, present, installed or latest")
 
   # --------------------
+  # Repo
+  # --------------------
+  include "::php::repo::${::osfamily}/${repo}.pp"
+
+  # --------------------
   # FPM
   # --------------------
   case $ensure_fpm {

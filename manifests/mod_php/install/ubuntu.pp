@@ -1,9 +1,10 @@
 # === define php::mod_php::install::ubuntu
 define php::mod_php::install::ubuntu (
   $ensure,
+  $repo,
   $custom_config,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '12.04', '14.04': {
@@ -27,7 +28,7 @@ define php::mod_php::install::ubuntu (
       $binary_path = "/usr/bin/php${name}"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

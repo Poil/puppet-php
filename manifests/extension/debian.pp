@@ -1,6 +1,7 @@
 # == define php::extension::debian
 define php::extension::debian (
   $ensure,
+  $repo,
   $type,
   $php_version,
   $sapi,
@@ -20,7 +21,7 @@ define php::extension::debian (
     $disabling_sapi = []
   }
 
-  case $::php::repo {
+  case $repo {
     'distrib': {
       $config_dir = '/etc/php5'
       $binary_path = '/usr/bin/php5'
@@ -45,7 +46,7 @@ define php::extension::debian (
       $ext_tool_query = "phpquery -v ${php_version}"
     }
     default: {
-      fail("Error - ${module_name}, Unknown repository ${::php::repo}")
+      fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
   $extension_name = "${_package_prefix}${name}"

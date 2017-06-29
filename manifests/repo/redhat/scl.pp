@@ -1,5 +1,5 @@
-# == class php::repo::redhat
-class php::repo::redhat (
+# == class php::repo::redhat::scl
+class php::repo::redhat::scl (
   $ensure = 'present'
 ) {
   file {'/etc/pki/rpm-gpg/RPM-GPG-KEY-CentOS-SIG-SCLo':
