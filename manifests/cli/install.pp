@@ -13,18 +13,21 @@ define php::cli::install (
     'Ubuntu': {
       ::php::cli::install::ubuntu { $name :
         ensure        => $ensure,
+        repo          => $repo,
         custom_config => $custom_cli_config,
       }
     }
     'Debian': {
       ::php::cli::install::debian { $name :
         ensure        => $ensure,
+        repo          => $repo,
         custom_config => $custom_cli_config,
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
       ::php::cli::install::redhat { $name :
         ensure        => $ensure,
+        repo          => $repo,
         custom_config => $custom_cli_config,
       }
     }
