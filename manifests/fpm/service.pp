@@ -1,6 +1,7 @@
 # == define php::fpm::service
 define php::fpm::service (
   $ensure,
+  $repo,
   $enable,
 ) {
   case $::operatingsystem {
