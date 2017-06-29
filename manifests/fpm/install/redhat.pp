@@ -11,6 +11,7 @@ define php::fpm::install::redhat (
           $package_name = 'php-fpm'
           $config_dir = '/etc'
           $binary_path = '/bin/php'
+          $logrotate_name = 'php-fpm'
         }
         default: {
           fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -71,13 +72,6 @@ define php::fpm::install::redhat (
         require        => Package[$package_name],
       }
 
-      file { "/etc/logrotate.d/php-${name}-fpm-pool":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template("${module_name}/logrotate/${::osfamily}/php-fpm-pool.erb"),
-      }
     }
     'absent', 'purged': {
       # don't purge on redhat, fpm and mod_php is the same ini file

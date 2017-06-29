@@ -11,6 +11,7 @@ define php::fpm::install::debian (
           $package_name = 'php5-fpm'
           $config_dir = '/etc/php5'
           $binary_path = '/usr/bin/php5'
+          $logrotate_name = 'php5-fpm'
         }
         default: {
           fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -21,6 +22,7 @@ define php::fpm::install::debian (
       $package_name = "php${name}-fpm"
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
+      $logrotate_name = "php${name}-fpm"
     }
     default: {
       fail("error - ${module_name} unknown repository ${repo}")
@@ -49,7 +51,7 @@ define php::fpm::install::debian (
         require        => Package[$package_name],
       }
 
-      file { "/etc/logrotate.d/php-${name}-fpm-pool":
+      file { "/etc/logrotate.d/${logrotate_name}":
         ensure  => present,
         owner   => 'root',
         group   => 'root',
