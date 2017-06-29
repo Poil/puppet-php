@@ -20,7 +20,8 @@ define php::install (
   # --------------------
   # Repo
   # --------------------
-  include "::php::repo::${::osfamily}/${repo}.pp"
+  $osfamily_min = downcase($::osfamily)
+  include "::php::repo::${osfamily_min}/${repo}.pp"
 
   # --------------------
   # FPM
