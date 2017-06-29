@@ -53,9 +53,20 @@ define php::fpm::install::ubuntu (
         default_config => $default_fpm_config,
         require        => Package[$package_name],
       }
+
+      file { "/etc/logrotate.d/php-${name}-fpm-pool":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template("${module_name}/logrotate/${::osfamily}/php-fpm-pool.erb"),
+      }
     }
     'absent', 'purged': {
       file { "${config_dir}/fpm/php.ini":
+        ensure => absent
+      }
+      file { '/etc/logrotate.d/php-fpm-pool':
         ensure => absent
       }
     }

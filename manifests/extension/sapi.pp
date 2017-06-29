@@ -1,3 +1,4 @@
+# == define php::extension::sapi
 define php::extension::sapi (
   $ensure,
   $module,

@@ -28,4 +28,3 @@ class php::repo::debian::sury (
   }
 
 }
-

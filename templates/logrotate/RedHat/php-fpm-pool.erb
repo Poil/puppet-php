@@ -1,0 +1,16 @@
+<% @fpm_pools.each do |pool_name,value| %>/var/log/php<%= @name %>-fpm.<%= pool_name %>/*.log
+<% end %>{
+  rotate 12
+  weekly
+  missingok
+  notifempty
+  compress
+  delaycompress
+  postrotate
+<%- if @repo == 'distrib' -%>
+    /bin/kill -SIGUSR1 `cat /var/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+<%- else -%>
+    /bin/kill -SIGUSR1 `cat /var/opt/rh/rh-php<%= @name.to_s.gsub('.', '') %>/run/php-fpm/php-fpm.pid 2>/dev/null` 2>/dev/null || true
+<%- end -%>
+  endscript
+}

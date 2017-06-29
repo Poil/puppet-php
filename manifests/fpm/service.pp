@@ -1,3 +1,4 @@
+# == define php::fpm::service
 define php::fpm::service (
   $ensure,
   $enable,
@@ -5,20 +6,20 @@ define php::fpm::service (
   case $::operatingsystem {
     'Ubuntu': {
       ::php::fpm::service::ubuntu { $name :
-        ensure  => $ensure,
-        enable  => $enable
+        ensure => $ensure,
+        enable => $enable
       }
     }
     'Debian': {
       ::php::fpm::service::debian { $name :
-        ensure  => $ensure,
-        enable  => $enable
+        ensure => $ensure,
+        enable => $enable
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
       ::php::fpm::service::redhat { $name :
-        ensure  => $ensure,
-        enable  => $enable
+        ensure => $ensure,
+        enable => $enable
       }
     }
     default: {
@@ -26,6 +27,3 @@ define php::fpm::service (
     }
   }
 }
-
-
-

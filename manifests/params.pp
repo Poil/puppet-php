@@ -96,6 +96,9 @@ class php::params {
         }
       }
     }
+    default: {
+      fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystem} is not supported")
+    }
   }
 }
 
