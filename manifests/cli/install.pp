@@ -1,6 +1,7 @@
 # == define php::cli::install
 define php::cli::install (
   $ensure = 'present',
+  $repo = $::php::repo,
   $custom_config = {},
 ) {
   $default_config = {
