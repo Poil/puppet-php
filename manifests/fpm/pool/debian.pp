@@ -1,12 +1,13 @@
 # == define php::fpm::pool::debian
 define php::fpm::pool::debian(
   $config,
+  $repo,
   $version,
   $listen,
   $ensure = 'present',
   $pool_name = $name,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '7', '8': {
@@ -21,7 +22,7 @@ define php::fpm::pool::debian(
       $config_dir = "/etc/php/${version}"
     }
     default: {
-      fail("Error - ${module_name}, unknown repository ${::php::repo}")
+      fail("Error - ${module_name}, unknown repository ${repo}")
     }
   }
 

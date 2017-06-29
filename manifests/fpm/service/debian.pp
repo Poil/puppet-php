@@ -1,8 +1,10 @@
+# == define php::fpm::service::debian
 define php::fpm::service::debian (
   $ensure,
+  $repo,
   $enable,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '7', '8': {
@@ -17,7 +19,7 @@ define php::fpm::service::debian (
       $service_name = "php${name}-fpm"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

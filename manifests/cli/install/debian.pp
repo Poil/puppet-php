@@ -1,8 +1,10 @@
+# == define php::cli::install::debian
 define php::cli::install::debian (
   $ensure,
+  $repo,
   $custom_config,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '7', '8': {
@@ -21,7 +23,7 @@ define php::cli::install::debian (
       $binary_path = "/usr/bin/php${name}"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

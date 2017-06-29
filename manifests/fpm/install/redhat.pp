@@ -1,9 +1,10 @@
-# define php::fpm::install::redhat
+# == define php::fpm::install::redhat
 define php::fpm::install::redhat (
   $ensure,
+  $repo,
   $custom_config,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '5', '6', '7': {
@@ -44,7 +45,7 @@ define php::fpm::install::redhat (
       }
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 
@@ -71,9 +72,7 @@ define php::fpm::install::redhat (
       }
     }
     'absent', 'purged': {
-    #  file { "${config_dir}/php.ini":
-    #    ensure => absent
-    #  }
+      # don't purge on redhat, fpm and mod_php is the same ini file
     }
     default: {
       fail("Error - ${module_name}, unknown ensure value '${ensure}'")
