@@ -12,12 +12,14 @@ define php::fpm::install::ubuntu (
           $config_dir = '/etc/php5'
           $binary_path = '/usr/bin/php5'
           $logrotate_name = 'php5-fpm'
+          $logrotate_mainfile = '/var/log/php5-fpm.log'
         }
         '16.04': {
           $package_name = 'php7.0-fpm'
           $config_dir = '/etc/php/7.0'
           $binary_path = '/usr/bin/php7'
           $logrotate_name = 'php7-fpm'
+          $logrotate_mainfile = '/var/log/php7.0-fpm.log'
         }
         default: {
           fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -29,6 +31,7 @@ define php::fpm::install::ubuntu (
       $config_dir = "/etc/php/${name}"
       $binary_path = "/usr/bin/php${name}"
       $logrotate_name = "php${name}-fpm"
+      $logrotate_mainfile = "/var/log/php${name}-fpm.log"
     }
     default: {
       fail("error - ${module_name} unknown repository ${repo}")
