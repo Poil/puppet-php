@@ -17,6 +17,7 @@ This module is intended to deploy standalone and multiple PHP version.
 * versions
   * Format :
     * versions : string
+      * repo : offload global repo parameter 
       * ensure_cli : string present/absent
       * ensure_mod_php : string present/absent
       * ensure_fpm : string present/absent  
@@ -37,8 +38,10 @@ This module is intended to deploy standalone and multiple PHP version.
       * custom_pool_config:
 
 ```yaml
+php::repo: scl
 php::versions:
     '5.5':
+        repo: distrib
         ensure_cli: present
         ensure_mod_php: present
         ensure_fpm: purged
@@ -88,4 +91,4 @@ php::versions:
 
 # NOTES
 ## PECL
-Don't use PECL to install the extension, but just download the tarball, unpack, chdir into unpacked dir and run: phpize5.5 && ./configure --with-php-config=php-config5.5 && make && sudo make install
+Don't use PECL to install the extension, but just download the tarball, unpack, chdir into unpacked dir and run: ```phpize5.5 && ./configure --with-php-config=php-config5.5 && make && sudo make install```
