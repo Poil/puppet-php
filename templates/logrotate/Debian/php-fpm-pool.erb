@@ -1,5 +1,5 @@
 <%= @logrotate_mainfile %> 
-<% @fpm_pools.each do |pool_name,value| %>/var/log/php<%= @name %>-fpm.<%= pool_name %>/*.log
+<% @fpm_pools.each do |pool_name,value| %><%= scope['::php::log_path'] %>/php<%= @name %>-fpm.<%= pool_name %>/*.log
 <% end %>{
   rotate 12
   weekly
