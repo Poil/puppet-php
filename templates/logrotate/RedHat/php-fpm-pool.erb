@@ -6,6 +6,7 @@
           @cur_log_path = scope['::php::log_path']
       end
 -%>
+<%=    @cur_log_path %>/php<%= @name %>-fpm.<%= pool_name %>/*.log
 <%- end -%>
 {
   rotate 12
