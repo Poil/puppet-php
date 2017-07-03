@@ -1,6 +1,6 @@
 <%= @logrotate_mainfile %> 
 <%- @fpm_pools.each do |pool_name,value| %>
-<%-    @cur_log_path = scope.function_getparam(["Php::Fpm::Pool[#{@pool_name}]" ,'log_path']) -%>
+<%-    @cur_log_path = scope.function_getparam(["Php::Fpm::Pool['#{@pool_name}']" ,'log_path']) -%>
 <%=    @cur_log_path %>/php<%= @name %>-fpm.<%= pool_name %>/*.log
 <%- end %>
 {
