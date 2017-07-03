@@ -82,9 +82,9 @@ define php::install (
       }
 
       ::php::fpm::logrotate { $name:
-        ensure => $ensure_service_fpm,
-        repo   => $repo,
-        enable => $enable_service_fpm,
+        ensure        => $ensure_fpm,
+        repo          => $repo,
+        custom_config => $custom_config_fpm,
       }
     }
   }
