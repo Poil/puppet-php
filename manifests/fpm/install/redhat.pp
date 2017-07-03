@@ -25,24 +25,28 @@ define php::fpm::install::redhat (
           $package_name = 'php54-php-fpm'
           $config_dir = '/opt/rh/php54/root/etc'
           $binary_path = '/opt/rh/php54/root/bin/php'
+          $logrotate_name = 'rh-php54-php-fpm'
           $logrotate_mainfile = '/var/opt/rh/rh-php54/log/php-fpm/*.log'
         }
         '5.5': {
           $package_name = 'php55-php-fpm'
           $config_dir = '/opt/rh/php55/root/etc'
           $binary_path = '/opt/rh/php55/root/bin/php'
+          $logrotate_name = 'rh-php55-php-fpm'
           $logrotate_mainfile = '/var/opt/rh/rh-php55/log/php-fpm/*.log'
         }
         '5.6': {
           $package_name = 'rh-php56-php-fpm'
           $config_dir = '/etc/opt/rh/rh-php56'
           $binary_path = '/opt/rh/rh-php56/root/bin/php'
+          $logrotate_name = 'rh-php56-php-fpm'
           $logrotate_mainfile = '/var/opt/rh/rh-php56/log/php-fpm/*.log'
         }
         '7.0': {
           $package_name = 'rh-php70-php-fpm'
           $config_dir = '/etc/opt/rh/rh-php70'
           $binary_path = '/opt/rh/rh-php70/root/bin/php'
+          $logrotate_name = 'rh-php70-php-fpm'
           $logrotate_mainfile = '/var/opt/rh/rh-php70/log/php-fpm/*.log'
         }
         default: {
