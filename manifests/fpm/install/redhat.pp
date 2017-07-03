@@ -11,8 +11,6 @@ define php::fpm::install::redhat (
           $package_name = 'php-fpm'
           $config_dir = '/etc'
           $binary_path = '/bin/php'
-          $logrotate_name = 'php-fpm'
-          $logrotate_mainfile = '/var/log/php5-fpm.log'
         }
         default: {
           fail("Error - ${module_name}, unsupported OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -25,29 +23,21 @@ define php::fpm::install::redhat (
           $package_name = 'php54-php-fpm'
           $config_dir = '/opt/rh/php54/root/etc'
           $binary_path = '/opt/rh/php54/root/bin/php'
-          $logrotate_name = 'rh-php54-php-fpm'
-          $logrotate_mainfile = '/var/opt/rh/rh-php54/log/php-fpm/*.log'
         }
         '5.5': {
           $package_name = 'php55-php-fpm'
           $config_dir = '/opt/rh/php55/root/etc'
           $binary_path = '/opt/rh/php55/root/bin/php'
-          $logrotate_name = 'rh-php55-php-fpm'
-          $logrotate_mainfile = '/var/opt/rh/rh-php55/log/php-fpm/*.log'
         }
         '5.6': {
           $package_name = 'rh-php56-php-fpm'
           $config_dir = '/etc/opt/rh/rh-php56'
           $binary_path = '/opt/rh/rh-php56/root/bin/php'
-          $logrotate_name = 'rh-php56-php-fpm'
-          $logrotate_mainfile = '/var/opt/rh/rh-php56/log/php-fpm/*.log'
         }
         '7.0': {
           $package_name = 'rh-php70-php-fpm'
           $config_dir = '/etc/opt/rh/rh-php70'
           $binary_path = '/opt/rh/rh-php70/root/bin/php'
-          $logrotate_name = 'rh-php70-php-fpm'
-          $logrotate_mainfile = '/var/opt/rh/rh-php70/log/php-fpm/*.log'
         }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
@@ -79,14 +69,6 @@ define php::fpm::install::redhat (
         custom_config  => $fpm_config,
         default_config => $default_fpm_config,
         require        => Package[$package_name],
-      }
-
-      file { "/etc/logrotate.d/${logrotate_name}":
-        ensure  => present,
-        owner   => 'root',
-        group   => 'root',
-        mode    => '0644',
-        content => template("${module_name}/logrotate/${::osfamily}/php-fpm-pool.erb"),
       }
     }
     'absent', 'purged': {

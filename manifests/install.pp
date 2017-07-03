@@ -66,6 +66,7 @@ define php::install (
         repo    => $repo,
         notify  => ::Php::Fpm::Service[$name],
         require => [::Php::Fpm::Install[$name], Class['::php::folders']],
+        before  => ::Php::Fpm::Logrotate[$name],
       })
 
       # Purge default www pool if no pool with this name have been defined
@@ -78,6 +79,12 @@ define php::install (
           require   => [::Php::Fpm::Install[$name], Class['::php::folders']],
           notify    => ::Php::Fpm::Service[$name],
         }
+      }
+
+      ::php::fpm::logrotate { $name:
+        ensure => $ensure_service_fpm,
+        repo   => $repo,
+        enable => $enable_service_fpm,
       }
     }
   }
