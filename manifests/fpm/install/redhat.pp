@@ -77,6 +77,13 @@ define php::fpm::install::redhat (
         require        => Package[$package_name],
       }
 
+      file { "/etc/logrotate.d/${logrotate_name}":
+        ensure  => present,
+        owner   => 'root',
+        group   => 'root',
+        mode    => '0644',
+        content => template("${module_name}/logrotate/${::osfamily}/php-fpm-pool.erb"),
+      }
     }
     'absent', 'purged': {
       # don't purge on redhat, fpm and mod_php is the same ini file
