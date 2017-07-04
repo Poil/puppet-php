@@ -55,7 +55,9 @@ define php::fpm::logrotate::redhat (
       }
     }
     'absent', 'purged': {
-      # don't purge on redhat, fpm and mod_php is the same ini file
+      file { "/etc/logrotate.d/${logrotate_name}":
+        ensure => absent
+      }
     }
     default: {
       fail("Error - ${module_name}, unknown ensure value '${ensure}'")

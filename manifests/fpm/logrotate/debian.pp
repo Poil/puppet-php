@@ -36,7 +36,7 @@ define php::fpm::logrotate::debian (
       }
     }
     'absent', 'purged': {
-      file { '/etc/logrotate.d/php-fpm-pool':
+      file { "/etc/logrotate.d/${logrotate_name}":
         ensure => absent
       }
     }

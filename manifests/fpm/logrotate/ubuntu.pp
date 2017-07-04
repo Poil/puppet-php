@@ -40,7 +40,7 @@ define php::fpm::logrotate::ubuntu (
       }
     }
     'absent', 'purged': {
-      file { '/etc/logrotate.d/php-fpm-pool':
+      file { "/etc/logrotate.d/${logrotate_name}":
         ensure => absent
       }
     }
