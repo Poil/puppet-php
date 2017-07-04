@@ -1,3 +1,4 @@
+# == class php::globals
 class php::globals {
   # ------------------------
   # Default Config (globals)

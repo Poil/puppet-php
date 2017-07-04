@@ -1,3 +1,4 @@
+# == define php::config
 define php::config(
   $default_config = {},
   $custom_config = {}

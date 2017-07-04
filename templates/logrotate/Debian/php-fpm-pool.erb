@@ -1,0 +1,25 @@
+<%= @logrotate_mainfile %> 
+<%- @fpm_pools.each do |pool_name, value|
+      if value.has_key?('log_path')
+          @cur_log_path = value['log_path']
+      else
+          @cur_log_path = scope['::php::log_path']
+      end
+-%>
+<%=    @cur_log_path %>/php<%= @name %>-fpm.<%= pool_name %>/*.log
+<%- end -%>
+{
+  rotate 12
+  weekly
+  missingok
+  notifempty
+  compress
+  delaycompress
+  postrotate
+<%- if @name.to_i == 5 -%>
+    /usr/lib/php5/php5-fpm-reopenlogs
+<%- else -%>
+    /usr/lib/php/php<%= @name %>-fpm-reopenlogs
+<%- end -%>
+  endscript
+}

@@ -1,13 +1,14 @@
 # == define php::fpm::pool::redhat
 define php::fpm::pool::redhat(
   $config,
+  $repo,
   $version,
   $listen,
   $ensure = 'present',
   $pool_name = $name,
 ) {
 
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '5', '6', '7': {
@@ -38,7 +39,7 @@ define php::fpm::pool::redhat(
       }
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

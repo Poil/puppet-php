@@ -1,6 +1,7 @@
 # == define php::extension
 define php::extension (
   $ensure,
+  $repo,
   $php_version,
   $sapi = ['ALL'],
   $extension_config = {},
@@ -12,6 +13,7 @@ define php::extension (
     'Ubuntu': {
       ::php::extension::ubuntu { $name:
         ensure           => $ensure,
+        repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
         sapi             => $sapi,
@@ -23,6 +25,7 @@ define php::extension (
     'Debian': {
       ::php::extension::debian { $name:
         ensure           => $ensure,
+        repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
         sapi             => $sapi,
@@ -34,6 +37,7 @@ define php::extension (
     'RedHat', 'CentOS', 'OracleLinux': {
       ::php::extension::redhat{ $name:
         ensure           => $ensure,
+        repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
         extension_config => $extension_config,

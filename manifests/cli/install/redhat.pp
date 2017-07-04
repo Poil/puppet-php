@@ -1,8 +1,10 @@
+# == define php::cli::install::redhat
 define php::cli::install::redhat (
   $ensure,
+  $repo,
   $custom_config,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '5', '6', '7': {
@@ -43,7 +45,7 @@ define php::cli::install::redhat (
       }
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

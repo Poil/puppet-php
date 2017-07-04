@@ -5,7 +5,7 @@
 # [*ensure*]
 #   Ensure present/absent
 #
-class php::repo::ubuntu (
+class php::repo::ubuntu::ondrej (
   $ensure = 'present'
 ) {
   if $caller_module_name != $module_name {

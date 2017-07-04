@@ -1,18 +1,19 @@
 # == define php::fpm::pool
 define php::fpm::pool (
   $version,
+  $repo,
   $pool_name = $name,
   $ensure = 'present',
   $custom_pool_config = {},
   $user = $::php::globals::fpm_user,
   $group = $::php::globals::fpm_group,
-  $listen = '',
+  $listen = '', # lint:ignore:empty_string_assignment
   $listen_owner = $::php::globals::fpm_user,
   $listen_group = $::php::globals::fpm_group,
   $listen_mode = '0660',
   $pm = 'ondemand',
   $pm_max_children = 5,
-  $pm_start_servers = '',
+  $pm_start_servers = '', # lint:ignore:empty_string_assignment
   $pm_min_spare_servers = 1,
   $pm_max_spare_servers = 3,
   $pm_process_idle_timeout = '10s',
@@ -29,16 +30,16 @@ define php::fpm::pool (
     fail("Error - ${module_name} : Can't find os '${os}' in ::php::fpm_socket_dir")
   } elsif !has_key($::php::fpm_socket_dir[$os], $::operatingsystemmajrelease) {
     fail("Error - ${module_name} : Can't find osmajrelease '${::operatingsystemmajrelease}' in ::php::fpm_socket_dir[${os}]")
-  } elsif !has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease], $::php::repo) {
-    fail("Error - ${module_name} : Can't find repo '${::php::repo}' in ::php::fpm_socket_dir[${os}][${::operatingsystemmajrelease}]")
+  } elsif !has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease], $repo) {
+    fail("Error - ${module_name} : Can't find repo '${repo}' in ::php::fpm_socket_dir[${os}][${::operatingsystemmajrelease}]")
   }
 
   # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
-  if has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo], $version) {
-    $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo][$version]
+  if has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo], $version) {
+    $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo][$version]
     $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
   } else {
-    $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$::php::repo]['default']
+    $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo]['default']
     $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
   }
 
@@ -115,6 +116,7 @@ define php::fpm::pool (
     'Ubuntu': {
       ::php::fpm::pool::ubuntu { $name:
         ensure    => $ensure,
+        repo      => $repo,
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,
@@ -124,6 +126,7 @@ define php::fpm::pool (
     'Debian': {
       ::php::fpm::pool::debian { $name:
         ensure    => $ensure,
+        repo      => $repo,
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,
@@ -133,6 +136,7 @@ define php::fpm::pool (
     'RedHat', 'CentOS', 'OracleLinux': {
       ::php::fpm::pool::redhat { $name:
         ensure    => $ensure,
+        repo      => $repo,
         pool_name => $pool_name,
         config    => $pool_config,
         version   => $version,

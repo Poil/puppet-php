@@ -1,26 +1,26 @@
-# == define php::fpm::install
-define php::fpm::install (
+# == define php::fpm::logrotate
+define php::fpm::logrotate (
   $ensure = 'present',
   $repo = $::php::repo,
   $custom_config = {},
 ) {
   case $::operatingsystem {
     'Ubuntu': {
-      ::php::fpm::install::ubuntu { $name :
+      ::php::fpm::logrotate::ubuntu { $name :
         ensure        => $ensure,
         repo          => $repo,
         custom_config => $custom_config,
       }
     }
     'Debian': {
-      ::php::fpm::install::debian { $name :
+      ::php::fpm::logrotate::debian { $name :
         ensure        => $ensure,
         repo          => $repo,
         custom_config => $custom_config,
       }
     }
     'RedHat', 'CentOS','OracleLinux': {
-      ::php::fpm::install::redhat { $name :
+      ::php::fpm::logrotate::redhat { $name :
         ensure        => $ensure,
         repo          => $repo,
         custom_config => $custom_config,
@@ -30,4 +30,3 @@ define php::fpm::install (
     }
   }
 }
-

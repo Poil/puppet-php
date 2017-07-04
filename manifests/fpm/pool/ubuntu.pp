@@ -1,13 +1,14 @@
 # == define php::fpm::pool::ubuntu
 define php::fpm::pool::ubuntu(
   $config,
+  $repo,
   $version,
   $listen,
   $ensure = 'present',
   $pool_name = $name,
 ) {
 
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '12.04', '14.04': {
@@ -25,7 +26,7 @@ define php::fpm::pool::ubuntu(
       $config_dir = "/etc/php/${version}"
     }
     default: {
-      fail("Error - ${module_name}, unknown repository ${::php::repo}")
+      fail("Error - ${module_name}, unknown repository ${repo}")
     }
   }
 

@@ -4,7 +4,7 @@ class php::params {
   $fpm_socket_dir = {
     'Debian'      => {
       '7'         => {
-        'distrib' =>  { 'default' => '/run', },
+        'distrib' => { 'default' => '/run', },
       },
       '8'         => {
         'distrib' => { 'default' => '/run', },
@@ -37,7 +37,7 @@ class php::params {
         },
       },
       '7'         => {
-        'distrib' => '/run/php-fpm',
+        'distrib' => { 'default' => '/run/php-fpm', },
         'scl'     => {
           'default' => '/run/php-fpm',
           '5.6'     => '/var/opt/rh/rh-php56/run/php-fpm',
@@ -95,6 +95,9 @@ class php::params {
           fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystemmajrelease} is not supported")
         }
       }
+    }
+    default: {
+      fail("Error - ${module_name} : ${::operatingsystem} ${::operatingsystem} is not supported")
     }
   }
 }

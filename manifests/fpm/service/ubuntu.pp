@@ -1,8 +1,10 @@
+# == define php::fpm::service::ubuntu
 define php::fpm::service::ubuntu (
   $ensure,
+  $repo,
   $enable,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '12.04', '14.04': {
@@ -20,7 +22,7 @@ define php::fpm::service::ubuntu (
       $service_name = "php${name}-fpm"
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 

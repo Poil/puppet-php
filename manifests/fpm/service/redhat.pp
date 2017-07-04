@@ -1,8 +1,10 @@
+# == define php::fpm::service::redhat
 define php::fpm::service::redhat (
   $ensure,
+  $repo,
   $enable,
 ) {
-  case $::php::repo {
+  case $repo {
     'distrib': {
       case $::operatingsystemmajrelease {
         '5', '6', '7': {
@@ -33,7 +35,7 @@ define php::fpm::service::redhat (
       }
     }
     default: {
-      fail("error - ${module_name} unknown repository ${::php::repo}")
+      fail("error - ${module_name} unknown repository ${repo}")
     }
   }
 
