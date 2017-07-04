@@ -2,7 +2,7 @@
 define php::fpm::logrotate::ubuntu (
   $ensure,
   $repo,
-  $custom_config,
+  $fpm_pools,
 ) {
   case $repo {
     'distrib': {
