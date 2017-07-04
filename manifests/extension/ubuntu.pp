@@ -69,6 +69,7 @@ define php::extension::ubuntu (
     if !empty($_meta_package) {
       php::extension::ubuntu { $_meta_package:
         ensure           => $ensure,
+        repo             => $repo,
         type             => 'module',
         php_version      => $php_version,
         sapi             => $sapi,

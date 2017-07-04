@@ -63,6 +63,7 @@ define php::extension::debian (
     if !empty($_meta_package) {
       php::extension::debian { $meta_package:
         ensure           => $ensure,
+        repo             => $repo,
         type             => 'module',
         php_version      => $php_version,
         sapi             => $sapi,
