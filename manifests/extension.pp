@@ -1,8 +1,8 @@
 # == define php::extension
 define php::extension (
   $ensure,
-  $repo,
   $php_version,
+  $repo = $::php::repo,
   $sapi = ['ALL'],
   $extension_config = {},
   $package_prefix = undef,
