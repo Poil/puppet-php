@@ -12,7 +12,7 @@ define php::fpm::logrotate::ubuntu (
           $logrotate_mainfile = '/var/log/php5-fpm.log'
         }
         '16.04': {
-          $logrotate_name = 'php7-fpm'
+          $logrotate_name = 'php7.0-fpm'
           $logrotate_mainfile = '/var/log/php7.0-fpm.log'
         }
         default: {
