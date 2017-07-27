@@ -92,6 +92,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => Package[$extension_name],
                 notify           => Service[$::php::apache_service_name],
               }
             }
@@ -103,6 +104,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => Package[$extension_name],
                 notify           => Service[$::php::apache_service_name],
               }
             }
@@ -116,6 +118,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => Package[$extension_name],
               }
             }
             if !empty($disabling_sapi) {
@@ -126,6 +129,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => Package[$extension_name],
               }
             }
           }
