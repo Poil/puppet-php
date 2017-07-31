@@ -60,6 +60,7 @@ define php::extension::ubuntu (
   if ($type == 'package') {
     package { $extension_name:
       ensure => $ensure,
+      before => Php::Extension::Sapi[$p_enabling_sapi],
     }
   }
 
@@ -98,7 +99,6 @@ define php::extension::ubuntu (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
-                require          => Package[$extension_name],
                 notify           => Service[$::php::apache_service_name],
               }
             }
@@ -110,7 +110,6 @@ define php::extension::ubuntu (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
-                require          => Package[$extension_name],
                 notify           => Service[$::php::apache_service_name],
               }
             }
@@ -124,7 +123,6 @@ define php::extension::ubuntu (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
-                require          => Package[$extension_name],
               }
             }
             if !empty($disabling_sapi) {
@@ -135,7 +133,6 @@ define php::extension::ubuntu (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
-                require          => Package[$extension_name],
               }
             }
           }
