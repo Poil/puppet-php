@@ -54,8 +54,10 @@ define php::extension::debian (
   if ($type == 'package') {
     package { $extension_name:
       ensure => $ensure,
-      before => Php::Extension::Sapi[$p_enabling_sapi],
     }
+    $requirement = Package[$extension_name]
+  } else {
+    $requirement = undef
   }
 
   # Package that include multiple php module
@@ -71,6 +73,7 @@ define php::extension::debian (
         extension_config => $extension_config,
         package_prefix   => $package_prefix,
         meta_package     => [],
+        require          => $requirement,
       }
     }
   } else {
@@ -94,6 +97,7 @@ define php::extension::debian (
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
                 notify           => Service[$::php::apache_service_name],
+                require          => $requirement,
               }
             }
             if !empty($disabling_sapi) {
@@ -105,6 +109,7 @@ define php::extension::debian (
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
                 notify           => Service[$::php::apache_service_name],
+                require          => $requirement,
               }
             }
           }
@@ -117,6 +122,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => $requirement,
               }
             }
             if !empty($disabling_sapi) {
@@ -127,6 +133,7 @@ define php::extension::debian (
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
+                require          => $requirement,
               }
             }
           }
