@@ -1,6 +1,6 @@
 # PHP
 ## Introduction
-This module is intended to deploy standalone and multiple PHP version.
+This module is intended to deploy standalone and multiple PHP versions/instances.
 
 ## Parameters
 * repo : 
@@ -29,13 +29,28 @@ This module is intended to deploy standalone and multiple PHP version.
           * ensure : string present/absent
           * sapi :
             * 
+        * meta_package: optional list of modules present and to activate in the package
+          * array of module
         * fpm_pools
-  * Example :
-    * pool name :
-      * ensure : string present/absent
-      * user
-      * group
-      * custom_pool_config:
+          * pool name
+            * ensure: string present/absent
+            * user: run user
+            * group: run group
+            * listen: string, default empty
+            * listen_owner: string, default OS php-fpm user
+            * listen_group: string, default OS php-fpm group
+            * listen_mode: string, default 0660
+            * pm: string, default ondemand
+            * pm_max_children: integer, default 5
+            * pm_start_servers: integer, default empty
+            * pm_min_spare_servers: integer, default 1
+            * pm_max_spare_servers : integer, default 3
+            * pm_process_idle_timeout: string, default 10s
+            * pm_max_requests: integer, default 500
+            * log_path: string, default /var/log/php${version}-fpm.${pool_name}
+            * custom_pool_config:
+              * section (pool name)
+                * hash of configuration
 
 ```yaml
 php::repo: scl
@@ -91,4 +106,7 @@ php::versions:
 
 # NOTES
 ## PECL
+### Debian/Ubuntu Sury/Ondrej
 Don't use PECL to install the extension, but just download the tarball, unpack, chdir into unpacked dir and run: ```phpize5.5 && ./configure --with-php-config=php-config5.5 && make && sudo make install```
+### RedHat Family
+To do, use scl enable rh-phpXX pecl install module
