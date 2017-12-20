@@ -34,6 +34,10 @@ define php::fpm::logrotate::redhat (
           $logrotate_name = 'rh-php70-php-fpm'
           $logrotate_mainfile = '/var/opt/rh/rh-php70/log/php-fpm/*.log'
         }
+        '7.1': {
+          $logrotate_name = 'rh-php71-php-fpm'
+          $logrotate_mainfile = '/var/opt/rh/rh-php71/log/php-fpm/*.log'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
@@ -56,7 +60,7 @@ define php::fpm::logrotate::redhat (
     }
     'absent', 'purged': {
       file { "/etc/logrotate.d/${logrotate_name}":
-        ensure => absent
+        ensure => absent,
       }
     }
     default: {

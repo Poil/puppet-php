@@ -29,6 +29,9 @@ define php::fpm::service::redhat (
         '7.0': {
           $service_name = 'rh-php70-php-fpm'
         }
+        '7.1': {
+          $service_name = 'rh-php71-php-fpm'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }

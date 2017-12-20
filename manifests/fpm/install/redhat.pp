@@ -39,6 +39,11 @@ define php::fpm::install::redhat (
           $config_dir = '/etc/opt/rh/rh-php70'
           $binary_path = '/opt/rh/rh-php70/root/bin/php'
         }
+        '7.1': {
+          $package_name = 'rh-php71-php-fpm'
+          $config_dir = '/etc/opt/rh/rh-php71'
+          $binary_path = '/opt/rh/rh-php71/root/bin/php'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
