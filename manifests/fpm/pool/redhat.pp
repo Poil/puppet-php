@@ -33,6 +33,9 @@ define php::fpm::pool::redhat(
         '7.0': {
           $config_dir = '/etc/opt/rh/rh-php70'
         }
+        '7.1': {
+          $config_dir = '/etc/opt/rh/rh-php71'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${version} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
@@ -50,7 +53,7 @@ define php::fpm::pool::redhat(
   $default_config = {
     "${pool_name}"  => { # lint:ignore:only_variable_string
       'listen' => $listen,
-    }
+    },
   }
 
   $pool_config = deep_merge($config, $default_config)
@@ -61,7 +64,7 @@ define php::fpm::pool::redhat(
     }
     'absent', 'purged': {
       file { "${config_dir}/php-fpm.d/${pool_name}.conf":
-        ensure => absent
+        ensure => absent,
       }
     }
     default: {

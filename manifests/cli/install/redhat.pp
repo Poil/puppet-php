@@ -39,6 +39,11 @@ define php::cli::install::redhat (
           $config_dir = '/etc/opt/rh/rh-php70'
           $binary_path = '/opt/rh/rh-php70/root/bin/php'
         }
+        '7.1': {
+          $package_name = 'rh-php71-php-cli'
+          $config_dir = '/etc/opt/rh/rh-php71'
+          $binary_path = '/opt/rh/rh-php71/root/bin/php'
+        }
         default: {
           fail("Error - ${module_name}, unsupported version ${name} on OSRelease ${::operatingsystem} ${::operatingsystemmajrelease}")
         }
@@ -69,7 +74,7 @@ define php::cli::install::redhat (
     }
     'absent', 'purged': {
       file { "${config_dir}/php-cli.ini":
-        ensure => absent
+        ensure => absent,
       }
     }
     default: {

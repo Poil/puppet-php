@@ -36,6 +36,11 @@ define php::extension::redhat (
           $binary_path = '/opt/rh/rh-php70/root/usr/bin/php'
           $_package_prefix = pick($package_prefix, "rh-php${stripped_version}-php-")
         }
+        '7.1': {
+          $config_dir = '/etc/opt/rh/rh-php71/php.d'
+          $binary_path = '/opt/rh/rh-php71/root/usr/bin/php'
+          $_package_prefix = pick($package_prefix, "rh-php${stripped_version}-php-")
+        }
         default: {
         }
       }
