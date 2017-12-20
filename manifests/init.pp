@@ -52,7 +52,7 @@ class php (
       if $repo == 'scl' {
         case $::operatingsystemmajrelease {
           '6', '7': {
-            if count(intersection($versions_keys, ['5.4' , '5.5', '5.6', '7.0'])) != count($versions_keys) {
+            if count(intersection($versions_keys, ['5.4' , '5.5', '5.6', '7.0', '7.1'])) != count($versions_keys) {
               fail("Error - ${module_name} versions ${versions_str} are not supported by scl repository")
             }
           }
