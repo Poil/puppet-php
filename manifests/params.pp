@@ -42,6 +42,7 @@ class php::params {
           'default' => '/run/php-fpm',
           '5.6'     => '/var/opt/rh/rh-php56/run/php-fpm',
           '7.0'     => '/var/opt/rh/rh-php70/run/php-fpm',
+          '7.1'     => '/var/opt/rh/rh-php71/run/php-fpm',
         },
       },
     },
