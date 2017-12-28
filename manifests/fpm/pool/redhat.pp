@@ -5,8 +5,12 @@ define php::fpm::pool::redhat(
   $version,
   $listen,
   $ensure = 'present',
-  $pool_name = $name,
 ) {
+  if ($name =~ /^(.+)##(.+)$/) {
+    $pool_name = $2
+  } else {
+    fail("Error - ${module_name}, Invalid pool name : ${name}")
+  }
 
   case $repo {
     'distrib': {

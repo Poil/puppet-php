@@ -1,6 +1,7 @@
 # == define php::extension::redhat
 define php::extension::redhat (
   $ensure,
+  $extension_name,
   $repo,
   $type,
   $php_version,
@@ -49,10 +50,10 @@ define php::extension::redhat (
       fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
-  $extension_name = "${_package_prefix}${name}"
+  $package_name = "${_package_prefix}${extension_name}"
 
   if ($type == 'package') {
-    package { $extension_name:
+    package { $package_name:
       ensure => $ensure,
     }
   }

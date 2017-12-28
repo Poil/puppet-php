@@ -1,6 +1,7 @@
 # == define php::extension::ubuntu
 define php::extension::ubuntu (
   $ensure,
+  $extension_name,
   $repo,
   $type,
   $php_version,
@@ -44,8 +45,8 @@ define php::extension::ubuntu (
       }
     }
     'ondrej': {
-      $config_dir = "/etc/php/${name}"
-      $binary_path = "/usr/bin/php${name}"
+      $config_dir = "/etc/php/${extension_name}"
+      $binary_path = "/usr/bin/php${extension_name}"
       $_package_prefix = pick($package_prefix, "php${php_version}-")
       $ext_tool_enable = "phpenmod -v ${php_version}"
       $ext_tool_disable = "phpdismod -v ${php_version}"
@@ -55,20 +56,20 @@ define php::extension::ubuntu (
       fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
-  $extension_name = "${_package_prefix}${name}"
+  $package_name = "${_package_prefix}${extension_name}"
 
   if ($type == 'package') {
-    package { $extension_name:
+    package { $package_name:
       ensure => $ensure,
     }
-    $requirement = Package[$extension_name]
+    $requirement = Package[$package_name]
   } else {
     $requirement = undef
   }
 
   # Package that include multiple php module
   if !empty($meta_package) {
-    $_meta_package = reject($meta_package, $name)
+    $_meta_package = reject($meta_package, $extension_name)
     if !empty($_meta_package) {
       php::extension::ubuntu { $_meta_package:
         ensure           => $ensure,
@@ -86,7 +87,7 @@ define php::extension::ubuntu (
     case $ensure {
       'present', 'installed', 'latest': {
         $default_extension_config = {
-          'path' => "${config_dir}/mods-available/${name}.ini"
+          'path' => "${config_dir}/mods-available/${extension_name}.ini"
         }
         if !empty($extension_config) {
           create_ini_settings($extension_config, $default_extension_config)
@@ -95,10 +96,10 @@ define php::extension::ubuntu (
         case $is_mod_php {
           'present', 'installed': {
             if !empty($enabling_sapi) {
-              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${extension_name}/")
               ::php::extension::sapi { $p_enabling_sapi:
                 ensure           => present,
-                module           => $name,
+                module           => $extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -107,10 +108,10 @@ define php::extension::ubuntu (
               }
             }
             if !empty($disabling_sapi) {
-              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${extension_name}/")
               ::php::extension::sapi { $p_disabling_sapi:
                 ensure           => absent,
-                module           => $name,
+                module           => $extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -121,10 +122,10 @@ define php::extension::ubuntu (
           }
           default : {
             if !empty($enabling_sapi) {
-              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${name}/")
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${extension_name}/")
               ::php::extension::sapi { $p_enabling_sapi:
                 ensure           => present,
-                module           => $name,
+                module           => $extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -132,10 +133,10 @@ define php::extension::ubuntu (
               }
             }
             if !empty($disabling_sapi) {
-              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${name}/")
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${extension_name}/")
               ::php::extension::sapi { $p_disabling_sapi:
                 ensure           => absent,
-                module           => $name,
+                module           => $extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -146,7 +147,7 @@ define php::extension::ubuntu (
         }
       }
       'absent', 'purged': {
-        file { "${config_dir}/mods-available/${name}.ini":
+        file { "${config_dir}/mods-available/${extension_name}.ini":
           ensure => absent
         }
       }
