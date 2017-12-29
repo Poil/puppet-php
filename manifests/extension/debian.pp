@@ -73,7 +73,7 @@ define php::extension::debian (
 
   # Package that include multiple php module
   if !empty($meta_package) {
-    $_meta_package = prefix($meta_package, "${php_version}##")
+    $_meta_package = prefix($meta_package, "${php_version}-module##")
     php::extension::debian { $_meta_package:
       ensure           => $ensure,
       repo             => $repo,
