@@ -1,7 +1,6 @@
 # == define php::extension::ubuntu
 define php::extension::ubuntu (
   $ensure,
-  $extension_name,
   $repo,
   $type,
   $php_version,
@@ -9,6 +8,7 @@ define php::extension::ubuntu (
   $extension_config,
   $package_prefix,
   $meta_package,
+  $extension_name = $name,
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
@@ -73,7 +73,6 @@ define php::extension::ubuntu (
     if !empty($_meta_package) {
       php::extension::ubuntu { $_meta_package:
         ensure           => $ensure,
-        extension_name   => $extension_name,
         repo             => $repo,
         type             => 'module',
         php_version      => $php_version,

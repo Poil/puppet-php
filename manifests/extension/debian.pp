@@ -1,7 +1,6 @@
 # == define php::extension::debian
 define php::extension::debian (
   $ensure,
-  $extension_name,
   $repo,
   $type,
   $php_version,
@@ -9,6 +8,7 @@ define php::extension::debian (
   $extension_config,
   $package_prefix,
   $meta_package,
+  $extension_name = $name,
 ) {
   $available_sapi = ['fpm', 'apache2', 'cli']
 
@@ -67,7 +67,6 @@ define php::extension::debian (
     if !empty($_meta_package) {
       php::extension::debian { $_meta_package:
         ensure           => $ensure,
-        extension_name   => $extension_name,
         repo             => $repo,
         type             => 'module',
         php_version      => $php_version,

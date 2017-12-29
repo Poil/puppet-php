@@ -1,13 +1,13 @@
 # == define php::extension::redhat
 define php::extension::redhat (
   $ensure,
-  $extension_name,
   $repo,
   $type,
   $php_version,
   $extension_config,
   $package_prefix,
   $meta_package,
+  $extension_name = $name,
 ) {
   $is_mod_php = getparam(Php::Mod_php::Install[$php_version], 'ensure')
   $stripped_version = regsubst(sprintf('%s', $php_version), '\.', '')
