@@ -10,6 +10,16 @@ define php::extension::debian (
   $meta_package,
   $extension_name = $name,
 ) {
+  if ($extension_name == $name) {
+    if ($name =~ /^(.+)##(.+)$/) {
+      $_extension_name = $2
+    } else {
+      fail("Error - ${module_name}, Invalid pool name : ${name}")
+    }
+  } else {
+      $_extension_name = $extension_name
+  }
+
   $available_sapi = ['fpm', 'apache2', 'cli']
 
   $is_mod_php = getparam(Php::Mod_php::Install[$php_version], 'ensure')
@@ -39,8 +49,8 @@ define php::extension::debian (
       }
     }
     'sury': {
-      $config_dir = "/etc/php/${extension_name}"
-      $binary_path = "/usr/bin/php${extension_name}"
+      $config_dir = "/etc/php/${_extension_name}"
+      $binary_path = "/usr/bin/php${_extension_name}"
       $_package_prefix = pick($package_prefix, "php${php_version}-")
       $ext_tool_enable = "phpenmod -v ${php_version}"
       $ext_tool_disable = "phpdismod -v ${php_version}"
@@ -50,7 +60,7 @@ define php::extension::debian (
       fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
-  $package_name = "${_package_prefix}${extension_name}"
+  $package_name = "${_package_prefix}${_extension_name}"
 
   if ($type == 'package') {
     package { $package_name:
@@ -63,25 +73,23 @@ define php::extension::debian (
 
   # Package that include multiple php module
   if !empty($meta_package) {
-    $_meta_package = reject($meta_package, $extension_name)
-    if !empty($_meta_package) {
-      php::extension::debian { $_meta_package:
-        ensure           => $ensure,
-        repo             => $repo,
-        type             => 'module',
-        php_version      => $php_version,
-        sapi             => $sapi,
-        extension_config => $extension_config,
-        package_prefix   => $package_prefix,
-        meta_package     => [],
-        require          => $requirement,
-      }
+    $_meta_package = prefix($meta_package, "${php_version}##")
+    php::extension::debian { $_meta_package:
+      ensure           => $ensure,
+      repo             => $repo,
+      type             => 'module',
+      php_version      => $php_version,
+      sapi             => $sapi,
+      extension_config => $extension_config,
+      package_prefix   => $package_prefix,
+      meta_package     => [],
+      require          => $requirement,
     }
   } else {
     case $ensure {
       'present', 'installed', 'latest': {
         $default_extension_config = {
-          'path' => "${config_dir}/mods-available/${extension_name}.ini"
+          'path' => "${config_dir}/mods-available/${_extension_name}.ini"
         }
         if !empty($extension_config) {
           create_ini_settings($extension_config, $default_extension_config)
@@ -90,10 +98,10 @@ define php::extension::debian (
         case $is_mod_php {
           'present', 'installed': {
             if !empty($enabling_sapi) {
-              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${extension_name}/")
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${_extension_name}/")
               ::php::extension::sapi { $p_enabling_sapi:
                 ensure           => present,
-                module           => $extension_name,
+                module           => $_extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -102,10 +110,10 @@ define php::extension::debian (
               }
             }
             if !empty($disabling_sapi) {
-              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${extension_name}/")
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${_extension_name}/")
               ::php::extension::sapi { $p_disabling_sapi:
                 ensure           => absent,
-                module           => $extension_name,
+                module           => $_extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -116,10 +124,10 @@ define php::extension::debian (
           }
           default : {
             if !empty($enabling_sapi) {
-              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${extension_name}/")
+              $p_enabling_sapi = prefix($enabling_sapi, "enabling/${php_version}/${_extension_name}/")
               ::php::extension::sapi { $p_enabling_sapi:
                 ensure           => present,
-                module           => $extension_name,
+                module           => $_extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -127,10 +135,10 @@ define php::extension::debian (
               }
             }
             if !empty($disabling_sapi) {
-              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${extension_name}/")
+              $p_disabling_sapi = prefix($disabling_sapi, "disabling/${php_version}/${_extension_name}/")
               ::php::extension::sapi { $p_disabling_sapi:
                 ensure           => absent,
-                module           => $extension_name,
+                module           => $_extension_name,
                 ext_tool_query   => $ext_tool_query,
                 ext_tool_enable  => $ext_tool_enable,
                 ext_tool_disable => $ext_tool_disable,
@@ -141,7 +149,7 @@ define php::extension::debian (
         }
       }
       'absent', 'purged': {
-        file { "${config_dir}/mods-available/${extension_name}.ini":
+        file { "${config_dir}/mods-available/${_extension_name}.ini":
           ensure => absent
         }
       }

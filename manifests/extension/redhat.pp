@@ -9,6 +9,16 @@ define php::extension::redhat (
   $meta_package,
   $extension_name = $name,
 ) {
+  if ($extension_name == $name) {
+    if ($name =~ /^(.+)##(.+)$/) {
+      $_extension_name = $2
+    } else {
+      fail("Error - ${module_name}, Invalid pool name : ${name}")
+    }
+  } else {
+      $_extension_name = $extension_name
+  }
+
   $is_mod_php = getparam(Php::Mod_php::Install[$php_version], 'ensure')
   $stripped_version = regsubst(sprintf('%s', $php_version), '\.', '')
 
@@ -50,7 +60,7 @@ define php::extension::redhat (
       fail("Error - ${module_name}, Unknown repository ${repo}")
     }
   }
-  $package_name = "${_package_prefix}${extension_name}"
+  $package_name = "${_package_prefix}${_extension_name}"
 
   if ($type == 'package') {
     package { $package_name:
