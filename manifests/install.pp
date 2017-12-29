@@ -61,7 +61,8 @@ define php::install (
         require => [::Php::Fpm::Install[$name], Class['::php::folders']],
       }
 
-      create_resources('::php::fpm::pool', $fpm_pools, {
+      $_fpm_pools = prefix ($fpm_pools, "${name}##")
+      create_resources('::php::fpm::pool', $_fpm_pools, {
         version => $name,
         repo    => $repo,
         notify  => ::Php::Fpm::Service[$name],
@@ -71,7 +72,7 @@ define php::install (
 
       # Purge default www pool if no pool with this name have been defined
       if !empty($fpm_pools, 'fpm_pools') and !has_key($fpm_pools, 'www') {
-        ::php::fpm::pool { "${name}-www" :
+        ::php::fpm::pool { "${name}##www" :
           ensure    => absent,
           repo      => $repo,
           version   => $name,
@@ -112,7 +113,8 @@ define php::install (
   # --------------------
   # modules
   # --------------------
-  create_resources('::php::extension', $extensions, {
+  $_extensions = prefix ($extensions, "${name}##")
+  create_resources('::php::extension', $_extensions, {
     repo        => $repo,
     php_version => $name
   })  # Todo : notify apache or/and fpm

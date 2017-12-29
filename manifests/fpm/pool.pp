@@ -20,6 +20,16 @@ define php::fpm::pool (
   $pm_max_requests = 500,
   $log_path = $::php::log_path,
 ) {
+  # retro compat old forced name
+  if ($pool_name == $name) {
+    if ($name =~ /^(.+)##(.+)$/) {
+      $_pool_name = $2
+    } else {
+      fail("Error - ${module_name}, Invalid pool name : ${name}")
+    }
+  } else {
+      $_pool_name = $pool_name
+  }
 
   $os = $::osfamily ? {
     'Debian' => $::operatingsystem,
@@ -37,10 +47,10 @@ define php::fpm::pool (
   # We always use the path from the repo, there is no way to determine if the package is from distrib or from repo if repo is declared
   if has_key($::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo], $version) {
     $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo][$version]
-    $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+    $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${_pool_name}.sock")
   } else {
     $default_socket_dir = $::php::fpm_socket_dir[$os][$::operatingsystemmajrelease][$repo]['default']
-    $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${pool_name}.sock")
+    $_listen = pick($listen, "${default_socket_dir}/php${version}-fpm.${_pool_name}.sock")
   }
 
   # -----------------------------
@@ -65,7 +75,7 @@ define php::fpm::pool (
   # -----------------------------
   # Config
   $default_pool_config = {
-    "${pool_name}"                    => {
+    "${_pool_name}"                    => {
       'user'                          => $user,
       'group'                         => $group,
       'listen.owner'                  => $listen_owner,
@@ -78,9 +88,9 @@ define php::fpm::pool (
       'pm.max_spare_servers'          => $pm_max_spare_servers,
       'pm.process_idle_timeout'       => $pm_process_idle_timeout,
       'pm.max_requests'               => $pm_max_requests,
-      'pm.status_path'                => "/pl-${version}-${pool_name}-status",
+      'pm.status_path'                => "/pl-${version}-${_pool_name}-status",
       'php_flag[display_errors]'      => 'off',
-      'php_admin_value[error_log]'    => "${log_path}/php${version}-fpm.${pool_name}/error.log",
+      'php_admin_value[error_log]'    => "${log_path}/php${version}-fpm.${_pool_name}/error.log",
       'php_admin_flag[log_errors]'    => 'on',
       'php_admin_value[memory_limit]' => '128M',
     }
@@ -88,18 +98,18 @@ define php::fpm::pool (
 
   case $ensure {
     'absent': {
-      file {"${log_path}/php${version}-fpm.${pool_name}":
+      file {"${log_path}/php${version}-fpm.${_pool_name}":
         ensure => absent,
       }
     }
     'purged': {
-      file {"${log_path}/php${version}-fpm.${pool_name}":
+      file {"${log_path}/php${version}-fpm.${_pool_name}":
         ensure => absent,
         force  => true,
       }
     }
     default : {
-      file {"${log_path}/php${version}-fpm.${pool_name}":
+      file {"${log_path}/php${version}-fpm.${_pool_name}":
         ensure => directory,
         owner  => $user,
         group  => $group,
@@ -115,32 +125,29 @@ define php::fpm::pool (
   case $::operatingsystem {
     'Ubuntu': {
       ::php::fpm::pool::ubuntu { $name:
-        ensure    => $ensure,
-        repo      => $repo,
-        pool_name => $pool_name,
-        config    => $pool_config,
-        version   => $version,
-        listen    => $_listen,
+        ensure  => $ensure,
+        repo    => $repo,
+        config  => $pool_config,
+        version => $version,
+        listen  => $_listen,
       }
     }
     'Debian': {
       ::php::fpm::pool::debian { $name:
-        ensure    => $ensure,
-        repo      => $repo,
-        pool_name => $pool_name,
-        config    => $pool_config,
-        version   => $version,
-        listen    => $_listen,
+        ensure  => $ensure,
+        repo    => $repo,
+        config  => $pool_config,
+        version => $version,
+        listen  => $_listen,
       }
     }
     'RedHat', 'CentOS', 'OracleLinux': {
       ::php::fpm::pool::redhat { $name:
-        ensure    => $ensure,
-        repo      => $repo,
-        pool_name => $pool_name,
-        config    => $pool_config,
-        version   => $version,
-        listen    => $_listen,
+        ensure  => $ensure,
+        repo    => $repo,
+        config  => $pool_config,
+        version => $version,
+        listen  => $_listen,
       }
     }
     default : {

@@ -8,11 +8,18 @@ define php::extension (
   $package_prefix = undef,
   $meta_package = [],
 ) {
+  if $name =~ /^(.+)##(.+)$/ {
+    $version = $1
+    $extension_name = $2
+  } else {
+    fail("Error - ${module_name}, Invalid extension name : ${name}")
+  }
 
   case $::operatingsystem {
     'Ubuntu': {
       ::php::extension::ubuntu { $name:
         ensure           => $ensure,
+        extension_name   => $extension_name,
         repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
@@ -25,6 +32,7 @@ define php::extension (
     'Debian': {
       ::php::extension::debian { $name:
         ensure           => $ensure,
+        extension_name   => $extension_name,
         repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
@@ -37,6 +45,7 @@ define php::extension (
     'RedHat', 'CentOS', 'OracleLinux': {
       ::php::extension::redhat{ $name:
         ensure           => $ensure,
+        extension_name   => $extension_name,
         repo             => $repo,
         type             => 'package',
         php_version      => $php_version,
