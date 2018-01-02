@@ -11,6 +11,7 @@ define php::install (
   $fpm_pools = {},
   $extensions = {},
   $repo = $::php::repo,
+  $manage_repo = $::php::manage_repo,
 ) {
 
   validate_re($ensure_cli, '^(present)|(installed)|(latest)|(absent)|(purged)$', "ensure_cli is '${ensure_cli}' and must be absent, purged, present, installed or latest")
@@ -32,7 +33,9 @@ define php::install (
           $osfamily_min = downcase($::osfamily)
         }
       }
-      include "::php::repo::${osfamily_min}::${repo}"
+      if $manage_repo {
+        include "::php::repo::${osfamily_min}::${repo}"
+      }
     }
   }
 

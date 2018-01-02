@@ -2,6 +2,7 @@
 class php (
   $versions            = $::php::params::versions,
   $repo                = $::php::params::repo,
+  $manage_repo         = true,
   $centos_mirror_url   = 'http://ftp.ciril.fr/pub/linux',
   $log_path            = '/var/log',
   $tmp_path            = '/tmp',
